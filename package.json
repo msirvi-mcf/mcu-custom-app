@@ -4,7 +4,7 @@
   "description": "",
   "private": true,
   "scripts": {
-    "build": "mc-scripts build",
+    "build": "yarn postinstall & mc-scripts build",
     "start": "mc-scripts start",
     "postinstall": "patch-package",
     "compile-html": "mc-scripts compile-html",
