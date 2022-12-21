@@ -14,7 +14,7 @@ const config = {
 
     production: {
       applicationId: 'clbxajxo0004rvr010vod1txk',
-      url: 'https://your_app_hostname.com',
+      url: 'https://mcu-custom-app.pages.dev',
     },
   },
 
