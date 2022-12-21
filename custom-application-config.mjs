@@ -23,20 +23,45 @@ const config = {
     manage: ['manage_products'],
   },
 
-  icon: '${path:@commercetools-frontend/assets/application-icons/rocket.svg}',
+  icon: '${path:@commercetools-frontend/assets/application-icons/mirakl.svg}',
   mainMenuLink: {
-    defaultLabel: 'Template starter',
+    defaultLabel: 'Mirakl',
     labelAllLocales: [],
     permissions: [PERMISSIONS.View],
   },
 
   submenuLinks: [
     {
-      uriPath: 'channels',
-      defaultLabel: 'Channels',
+      uriPath: 'dashboard',
+      defaultLabel: 'Dashboard',
       labelAllLocales: [],
       permissions: [PERMISSIONS.View],
     },
+    {
+      uriPath: 'data',
+      defaultLabel: 'Data',
+      labelAllLocales: [],
+      permissions: [PERMISSIONS.View],
+    },
+    {
+      uriPath: 'processes',
+      defaultLabel: 'Processes',
+      labelAllLocales: [],
+      permissions: [PERMISSIONS.View],
+    },
+    {
+      uriPath: 'settings',
+      defaultLabel: 'Settings',
+      labelAllLocales: [],
+      permissions: [PERMISSIONS.View],
+    },
+    {
+      uriPath: 'logs',
+      defaultLabel: 'Logs',
+      labelAllLocales: [],
+      permissions: [PERMISSIONS.View],
+    }
+
   ],
 };
 
