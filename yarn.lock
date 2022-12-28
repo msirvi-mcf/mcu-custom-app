@@ -1869,6 +1869,24 @@
     "@emotion/styled" "^11.3.0"
     prop-types "15.8.1"
 
+"@commercetools-uikit/checkbox-input@^15.8.0":
+  version "15.8.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/checkbox-input/-/checkbox-input-15.8.0.tgz#4204cc2a9fa83052eadc98813db0b38b12ca2169"
+  integrity sha512-mDggT+ETdCZs9nDvvyW04kVuT/v3gZNraZte7Muj7xQpafyNuTtb4+yDs5b6/71vENbiw4VSW4Hk808y6+X4/w==
+  dependencies:
+    "@babel/runtime" "^7.19.0"
+    "@babel/runtime-corejs3" "^7.19.1"
+    "@commercetools-uikit/design-system" "15.8.0"
+    "@commercetools-uikit/icons" "15.8.0"
+    "@commercetools-uikit/input-utils" "15.8.0"
+    "@commercetools-uikit/select-utils" "15.8.0"
+    "@commercetools-uikit/text" "15.8.0"
+    "@commercetools-uikit/utils" "15.8.0"
+    "@emotion/react" "^11.4.0"
+    "@emotion/styled" "^11.3.0"
+    prop-types "15.8.1"
+    react-intl "^5.25.1"
+
 "@commercetools-uikit/collapsible-motion@15.8.0":
   version "15.8.0"
   resolved "https://registry.yarnpkg.com/@commercetools-uikit/collapsible-motion/-/collapsible-motion-15.8.0.tgz#fb7ec8457782ba96a723ab8955efb61cccfbb9e7"
