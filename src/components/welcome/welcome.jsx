@@ -89,21 +89,19 @@ const Welcome = () => {
             gridTemplateColumns="repeat(3, 1fr)"
           >
             <InfoCard
-              title={intl.formatMessage(messages.cardDocumentationTitle)}
-              content={intl.formatMessage(messages.cardDocumentationContent)}
-              linkTo="https://docs.commercetools.com/custom-applications/what-is-a-custom-application"
-              isExternal
+              title={intl.formatMessage(messages.cardDataTitle)}
+              content={intl.formatMessage(messages.cardDataContent)}
+              linkTo={`${match.url}/data`}
             />
             <InfoCard
-              title={intl.formatMessage(messages.cardDesignSystemTitle)}
-              content={intl.formatMessage(messages.cardDesignSystemContent)}
-              linkTo="https://uikit.commercetools.com"
-              isExternal
+              title={intl.formatMessage(messages.cardProcessesTitle)}
+              content={intl.formatMessage(messages.cardProcessesContent)}
+              linkTo={`${match.url}/processes`}
             />
             <InfoCard
-              title={intl.formatMessage(messages.cardChannelsTitle)}
-              content={intl.formatMessage(messages.cardChannelsContent)}
-              linkTo={`${match.url}/channels`}
+              title={intl.formatMessage(messages.cardLogsTitle)}
+              content={intl.formatMessage(messages.cardLogsContent)}
+              linkTo={`${match.url}/logs`}
             />
           </Grid>
         </Spacings.Stack>

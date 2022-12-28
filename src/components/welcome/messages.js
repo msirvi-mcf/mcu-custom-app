@@ -3,37 +3,37 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   title: {
     id: 'Welcome.title',
-    defaultMessage: 'Develop applications for the Merchant Center',
+    defaultMessage: 'Mirakl Connector Dashboard',
   },
   subtitle: {
     id: 'Welcome.subtitle',
     defaultMessage:
-      'Welcome to Custom Applications! To get started, inspect the source code to get familiar with the setup, the folder structure, the development tools, etc. and read the README file for additional information.',
+      'Welcome to Mirakl connector dashboard. Click on the links below for more information',
   },
-  cardDocumentationTitle: {
-    id: 'Welcome.cardDocumentationTitle',
-    defaultMessage: 'Documentation',
+  cardDataTitle: {
+    id: 'Welcome.cardDataTitle',
+    defaultMessage: 'Data',
   },
-  cardDocumentationContent: {
-    id: 'Welcome.cardDocumentationContent',
-    defaultMessage: 'Learn more about Custom Applications.',
+  cardDataContent: {
+    id: 'Welcome.cardDataContent',
+    defaultMessage: 'Shops and offers data',
   },
-  cardDesignSystemTitle: {
-    id: 'Welcome.cardDesignSystemTitle',
-    defaultMessage: 'Design System',
+  cardProcessesTitle: {
+    id: 'Welcome.cardProcessesTitle',
+    defaultMessage: 'Processes',
   },
-  cardDesignSystemContent: {
-    id: 'Welcome.cardDesignSystemContent',
+  cardProcessesContent: {
+    id: 'Welcome.cardProcessesContent',
     defaultMessage:
-      'Explore the UI components to develop Custom Applications and learn more about the Design System.',
+      'List of all processes',
   },
-  cardChannelsTitle: {
-    id: 'Welcome.cardChannelsTitle',
-    defaultMessage: 'Fetching channels',
+  cardLogsTitle: {
+    id: 'Welcome.cardLogsTitle',
+    defaultMessage: 'Logs',
   },
-  cardChannelsContent: {
-    id: 'Welcome.cardChannelsContent',
+  cardLogsContent: {
+    id: 'Welcome.cardLogsContent',
     defaultMessage:
-      'Demo example to fetch some data using GraphQL and displaying it in a paginated table.',
+      'List of Api executions and its logs',
   },
 });

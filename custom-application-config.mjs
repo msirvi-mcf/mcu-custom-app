@@ -4,7 +4,7 @@ import { PERMISSIONS, entryPointUriPath } from './src/constants';
  * @type {import('@commercetools-frontend/application-config').ConfigOptions}
  */
 const config = {
-  name: 'Mcu',
+  name: 'Mirakl',
   entryPointUriPath,
   cloudIdentifier: 'gcp-us',
   env: {
@@ -23,7 +23,7 @@ const config = {
     manage: ['manage_products'],
   },
 
-  icon: '${path:@commercetools-frontend/assets/application-icons/mirakl.svg}',
+  icon: '${path:@commercetools-frontend/assets/application-icons/Mirakl.svg}',
   mainMenuLink: {
     defaultLabel: 'Mirakl',
     labelAllLocales: [],
