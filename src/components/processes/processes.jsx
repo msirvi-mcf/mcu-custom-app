@@ -8,7 +8,7 @@ import {
     useRouteMatch,
 } from 'react-router-dom';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
-import { NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
+// import { NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 import {
     usePaginationState,
     useDataTableSortingState,
@@ -26,15 +26,17 @@ import { Pagination } from '@commercetools-uikit/pagination';
 import Spacings from '@commercetools-uikit/spacings';
 import Text from '@commercetools-uikit/text';
 import { SuspendedRoute } from '@commercetools-frontend/application-shell';
-import {
-    formatLocalizedString,
-    transformLocalizedFieldToLocalizedString,
-} from '@commercetools-frontend/l10n';
+// import {
+//     formatLocalizedString,
+//     transformLocalizedFieldToLocalizedString,
+// } from '@commercetools-frontend/l10n';
 import messages from './messages';
-// import { useChannelsFetcher } from '../../hooks/use-channels-connector';
+import {
+    useProcessList
+  } from '../../hooks/use-process-details';
 // import { getErrorMessage } from '../../helpers';
 
-const Process = lazy(() => import('../process-detail'));
+const ProcessDetails = lazy(() => import('../process-detail'));
 const rows = [{
     'id': 418,
     'type': 'API',
@@ -49,38 +51,26 @@ const rows = [{
     'action': ''
 }];
 const initialVisibleColumns = [
-    { key: 'id', label: 'ID' },
-    { key: 'type', label: 'Type', isSortable: true },
-    { key: 'name', label: 'Name' },
-    { key: 'createAt', label: 'Created At' },
-    { key: 'processStatus', label: 'Process Status', isSortable: true }
-
+    { key: '_id', label: 'ID' },
+    { key: 'entity', label: 'Entity', isSortable: true },
+    { key: 'processedAt', label: 'Processed At' },
+    { key: 'source', label: 'Source', isSortable: true }
 ];
 const initialHiddenColumns = [
-    { key: 'duration', label: 'Duration', isSortable: true },
-    { key: 'file', label: 'File' },
-    { key: 'output', label: 'Output' },
-    { key: 'miraklStatus', label: 'Mirakl Status' },
-    { key: 'reportFile', label: 'Report File' },
-    { key: 'action', label: 'Action', isSortable: true },
+    { key: 'error', label: 'Error', isSortable: true },
+    { key: 'errorDetail', label: 'Error Detail', isSortable: true }    
 ]
 
 const itemRenderer = (item, column, dataLocale, projectLanguages) => {
     switch (column.key) {
-        // case 'roles':
-        //   return item.roles.join(', ');
-        // case 'name':
-        //   return formatLocalizedString(
-        //     { name: transformLocalizedFieldToLocalizedString(item.nameAllLocales) },
-        //     {
-        //       key: 'name',
-        //       locale: dataLocale,
-        //       fallbackOrder: projectLanguages,
-        //       fallback: NO_VALUE_FALLBACK,
-        //     }
-        //   );
+        case 'error':
+          return item[column.key]?item[column.key]['name']:'-';
+        case 'errorDetail':
+          return item['error']?item['error']['message']:'-';
+        case 'processedAt':
+            return new Date(item[column.key]).toLocaleDateString();
         default:
-            return item[column.key];
+            return item[column.key]?item[column.key]:'UNKNOWN';
     }
 };
 
@@ -130,7 +120,7 @@ const Processes = (props) => {
         IS_TABLE_CONDENSED_UPDATE: 'isTableCondensedUpdate',
         IS_TABLE_WRAPPING_TEXT_UPDATE: 'isTableWrappingTextUpdate'
     };
-    // const displaySettings = {isCondensed};
+    
     const tableSettingsChangeHandler = {
         [UPDATE_ACTIONS.COLUMNS_UPDATE]: (visibleColumnKeys) =>
             setTableData({
@@ -140,6 +130,7 @@ const Processes = (props) => {
         [UPDATE_ACTIONS.IS_TABLE_CONDENSED_UPDATE]: setIsCondensed,
         [UPDATE_ACTIONS.IS_TABLE_WRAPPING_TEXT_UPDATE]: setIsWrappingText,
     };
+    const { processList, loading, error } = useProcessList();
     const {
         rows: rowsWithSelection,
         toggleRow,
@@ -177,15 +168,21 @@ const Processes = (props) => {
             align: 'center',
             renderItem: (row) => (
                 <CheckboxInput
-                    isChecked={getIsRowSelected(row.id)}
-                    onChange={() => toggleRow(row.id)}
+                    isChecked={getIsRowSelected(row._id)}
+                    onChange={() => toggleRow(row._id)}
                 />
             ),
             disableResizing: true,
         },
         ...visibleColumns,
     ];
-
+    if (error) {
+        return (
+          <ContentNotification type="error">
+            <Text.Body>Something went wrong! Make sure the backend is running</Text.Body>
+          </ContentNotification>
+        );
+      }
     return (
         <Spacings.Stack scale="xl">
             <Spacings.Stack scale="xs">
@@ -204,9 +201,9 @@ const Processes = (props) => {
                 </ContentNotification>
             </Constraints.Horizontal>
 
-            {/* {loading && <LoadingSpinner />} */}
+            {loading && <LoadingSpinner />}
 
-            {true ? (
+            {processList ? (
                 <Spacings.Stack scale="l">
                     <DataTableManager
                         columns={withRowSelection ? columnsWithSelect : initialVisibleColumns}
@@ -220,15 +217,14 @@ const Processes = (props) => {
                             isCondensed
                             columns={initialVisibleColumns}
                             disableDisplaySettings
-                            rows={withRowSelection ? rowsWithSelection : rows}
+                            rows={processList}
                             itemRenderer={(item, column) =>
                                 itemRenderer(item, column, dataLocale, projectLanguages)
                             }
-                            maxHeight={600}
                             sortedBy={tableSorting.value.key}
                             sortDirection={tableSorting.value.order}
                             onSortChange={tableSorting.onChange}
-                            onRowClick={(row) => push(`${match.url}/${row.id}`)}
+                            onRowClick={(row) => push(`${match.url}/${row._id}`)}
                         /></DataTableManager>
                     <Pagination
                         page={page.value}
@@ -238,9 +234,9 @@ const Processes = (props) => {
                         totalItems={20}
                     />
                     <Switch>
-                        {/* <SuspendedRoute path={`${match.path}/:id`}>
-              <Process onClose={() => push(`${match.url}`)} />
-            </SuspendedRoute> */}
+                        <SuspendedRoute path={`${match.path}/:id`}>
+                            <ProcessDetails  />
+                        </SuspendedRoute>
                     </Switch>
                 </Spacings.Stack>
             ) : null}

@@ -1,3 +1,4 @@
 export {
-  useProcessDetails
+  useProcessDetails,
+  useProcessList
 } from './use-process-details';

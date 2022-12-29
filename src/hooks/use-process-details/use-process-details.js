@@ -1,29 +1,68 @@
 import { actions, useAsyncDispatch } from "@commercetools-frontend/sdk";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const externalApiUrl =
-  "https://jsonplaceholder.typicode.com/todos/1";
+  "https://2968-2402-e280-3e4e-e7-1855-6234-44ae-7c5.in.ngrok.io/incident/detail/63a45deada2d9b18694d9eb9";
+const baseUrl =
+  "https://2968-2402-e280-3e4e-e7-1855-6234-44ae-7c5.in.ngrok.io/";
+const logUrl = "process/list/"
 
-export const useProcessDetails = () => {
-  // The asyncDispatch is a wrapper around the redux dispatch and provides
-  // the correct return type definitions because the action resolves to a Promise.
-  const asyncDispatch = useAsyncDispatch();
-  const [loading,setLoading] = useState(false);
-  const [error,setError] = useState(false);
-  const [result,setresult] = useState({});
-    setLoading(true);
-    setLoading(false);
-    asyncDispatch(actions.forwardTo.get({ uri: externalApiUrl }))
-      .then((result) => {
-        setresult(result);
-      })
-      .catch((error) => {
-        setError(error);
-      });
-      return {
-        loading,
-        error,
-        result
+export const useProcessDetails = (processId) => {
+  const url = baseUrl + logUrl + '/'+ processId;
+  console.log(url);
+  const [data, setdata] = useState(null);
+  const [loading, setloading] = useState(true);
+  const [error, seterror] = useState("");
+  const dispatch = useAsyncDispatch();
+  useEffect(() => {
+    async function execute() {
+      try {
+        const result = await dispatch(
+          actions.forwardTo.get({ uri: url, headers: { "ngrok-skip-browser-warning": "69420" } })
+        );
+        // Update state with `result`
+        setdata(result);
+        setloading(false)
+      } catch (error) {
+        // Update state with `error`
+        seterror(error);
       }
+    }
+    execute();
+  }, [dispatch])
+
+  return {
+    data, loading, error
+  }
+
 };
 
+export const useProcessList = () => {
+  const url = baseUrl + logUrl;
+  const [data, setdata] = useState(null);
+  const [loading, setloading] = useState(true);
+  const [error, seterror] = useState("");
+  const dispatch = useAsyncDispatch();
+  useEffect(() => {
+    async function execute() {
+      try {
+        const result = await dispatch(
+          actions.forwardTo.get({ uri: url, headers: { "ngrok-skip-browser-warning": "69420" } })
+        );
+        // Update state with `result`
+        setdata(result);
+        setloading(false)
+      } catch (error) {
+        // Update state with `error`
+        seterror(error);
+      }
+    }
+    execute();
+  }, [dispatch])
+
+  return {
+    processList: data?.incidents,
+    loading,
+    error
+  }
+}
