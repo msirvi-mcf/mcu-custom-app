@@ -1,15 +1,14 @@
 import { actions, useAsyncDispatch } from "@commercetools-frontend/sdk";
 import { useEffect, useState } from "react";
-
-const externalApiUrl =
-  "https://2968-2402-e280-3e4e-e7-1855-6234-44ae-7c5.in.ngrok.io/incident/detail/63a45deada2d9b18694d9eb9";
-const baseUrl =
-  "https://2968-2402-e280-3e4e-e7-1855-6234-44ae-7c5.in.ngrok.io/";
-const logUrl = "process/list/"
+import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 
 export const useProcessDetails = (processId) => {
-  const url = baseUrl + logUrl + '/'+ processId;
-  console.log(url);
+  const baseUrl = useApplicationContext((context) =>
+    context.environment.externalApiUrl
+  );
+  const logUrl = "process/list/"
+  const url = baseUrl + logUrl + '/' + processId;
+  // console.log(url);
   const [data, setdata] = useState(null);
   const [loading, setloading] = useState(true);
   const [error, seterror] = useState("");
@@ -38,7 +37,12 @@ export const useProcessDetails = (processId) => {
 };
 
 export const useProcessList = () => {
+  const baseUrl = useApplicationContext((context) =>
+    context.environment.externalApiUrl
+  );
+  const logUrl = "process/list/"
   const url = baseUrl + logUrl;
+  console.log(url);
   const [data, setdata] = useState(null);
   const [loading, setloading] = useState(true);
   const [error, seterror] = useState("");

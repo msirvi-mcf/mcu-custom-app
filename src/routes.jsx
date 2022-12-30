@@ -2,6 +2,7 @@ import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import Spacings from '@commercetools-uikit/spacings';
 import Processes from './components/processes';
 import Welcome from './components/welcome';
+import Settings from './components/settings';
 
 const ApplicationRoutes = () => {
   const match = useRouteMatch();
@@ -22,6 +23,9 @@ const ApplicationRoutes = () => {
       <Switch>
         <Route path={`${match.path}/processes`}>
           <Processes linkToWelcome={match.url} />
+        </Route>
+        <Route path={`${match.path}/settings`}>
+          <Settings linkToWelcome={match.url} />
         </Route>
         <Route>
           <Welcome />

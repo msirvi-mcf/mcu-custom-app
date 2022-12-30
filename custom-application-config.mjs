@@ -63,6 +63,9 @@ const config = {
     }
 
   ],
+  additionalEnv: {
+    externalApiUrl: "${env:EXTERNAL_API_URL}"
+  }
 };
 
 export default config;
