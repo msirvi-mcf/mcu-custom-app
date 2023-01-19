@@ -38,6 +38,7 @@
     "@commercetools-test-data/commons": "4.1.1",
     "@commercetools-test-data/core": "4.1.1",
     "@commercetools-uikit/checkbox-input": "^15.8.0",
+    "@commercetools-uikit/collapsible-panel": "^15.9.0",
     "@commercetools-uikit/constraints": "^15.6.0",
     "@commercetools-uikit/data-table": "^15.6.0",
     "@commercetools-uikit/data-table-manager": "^15.8.0",

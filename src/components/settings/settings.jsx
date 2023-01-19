@@ -11,30 +11,27 @@ import {
 import messages from './messages';
 import FlatButton from '@commercetools-uikit/flat-button';
 import { useFormik } from 'formik';
-import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
-import LocalizedTextField from '@commercetools-uikit/localized-text-field';
-import FieldLabel from '@commercetools-uikit/field-label';
-import LocalizedTextInput from '@commercetools-uikit/localized-text-input';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import validate from './validate';
 import CheckboxInput from '@commercetools-uikit/checkbox-input';
 import SelectField from '@commercetools-uikit/select-field';
 import TextField from '@commercetools-uikit/text-field';
+import CollapsiblePanel from '@commercetools-uikit/collapsible-panel';
 const Settings = (props) => {
   const intl = useIntl();
-  const { dataLocale, languages } = useApplicationContext((context) => ({
-    dataLocale: context.dataLocale,
-    languages: context.project.languages,
-  }));
-  let isChecked;
   const formik = useFormik({
-    // We assume that the form is empty. Therefore, we need to provide default values.
     initialValues: {
-      // A Channel's `name`: https://docs.commercetools.com/api/projects/channels
-      name: LocalizedTextInput.createLocalizedString(languages),
-      connector: null,
-      url:null,
-      urlIsProduction:null,
+      connector: '',
+      name: '',
+      miraklApiKey: '',
+      miraklAPISecret: '',
+      urlIsProduction: null,
+      miraklClientKey: '',
+      ctClientID: '',
+      ctClientSecret: '',
+      authUrl: '',
+      ctHost: '',
+      ctProjectKey: '',
     },
     validate,
     onSubmit: async (formikValues) => {
@@ -60,6 +57,7 @@ const Settings = (props) => {
         </ContentNotification>
       </Constraints.Horizontal>
       <form onSubmit={formik.handleSubmit}>
+
         <SelectField
           title="Markeplace Connector"
           name="connector"
@@ -74,158 +72,201 @@ const Settings = (props) => {
             { value: 'disable', label: 'Disable' },
           ]}
         />
-        <fieldset>
-          <legend>Url Configuration</legend>
+        <CollapsiblePanel
+          header="Url Configuration"
+        >
+          <Spacings.Inline justifyContent='space-between' alignItems='center'>
+            <Spacings.Stack >
+              <TextField
+                name="name"
+                title="Backend URL"
+                value={formik.values.name}
+                errors={formik.errors.name}
+                touched={formik.touched.name}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                isRequired
 
+              />
+              <TextField
+                name="miraklApiKey"
+                title="Mirakl API key"
+                value={formik.values.miraklApiKey}
+                touched={formik.touched.miraklApiKey}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
 
-          <Spacings.Inline>
-            <TextField
-              name="url"
-              title="Backend URL"
-              value={formik.values.url}
-              errors={formik.errors.url}
-              touched={formik.touched.url}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              <TextField
+                name="miraklAPISecret"
+                title="Mirakl API Secret"
+                value={formik.values.miraklAPISecret}
+                errors={formik.errors.miraklAPISecret}
+                touched={formik.touched.miraklAPISecret}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
 
-              renderError={(errorKey) => {
-                
-              }}
-              horizontalConstraint={13}
-            />
-           
-            <CheckboxInput
-            name='urlIsProduction'
-            value={formik.values.urlIsProduction}
-            
-              aria-label={'is production'}>Is production</CheckboxInput>
-          </Spacings.Inline>
-          <Spacings.Inline>
-            <TextField
-              name="miraklApiKey"
-              title="Mirakl API key"
-              value={formik.values.miraklApiKey}
-              errors={formik.errors.miraklApiKey}
-              touched={formik.touched.miraklApiKey}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+                renderError={(errorKey) => {
 
-              renderError={(errorKey) => {
-               
-              }}
-              horizontalConstraint={13}
-            />
-           
-            <CheckboxInput
-             name='miraklApiKeyIsProduction'
-             value={formik.values.miraklApiKeyIsProduction}
-              onChange={formik.handleChange}
-              aria-label={'is production'}>Is production</CheckboxInput>
-          </Spacings.Inline>
+                }}
 
-          <Spacings.Inline>
-            <TextField
-              name="miraklAPISecret"
-              title="Mirakl API Secret"
-              value={formik.values.miraklAPISecret}
-              errors={formik.errors.miraklAPISecret}
-              touched={formik.touched.miraklAPISecret}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              />
 
-              renderError={(errorKey) => {
-                
-              }}
-              horizontalConstraint={13}
-            />
-           
-            <CheckboxInput
-             name='miraklAPISecretIsProduction'
-             value={formik.values.miraklAPISecretIsProduction}
-              onChange={formik.handleChange}
-              aria-label={'is production'}>Is production</CheckboxInput>
-          </Spacings.Inline>
-          <Spacings.Inline>
-            <TextField
-              name="miraklClientKey"
-              title="miraklClientKey"
-              value={formik.values.miraklClientKey}
-              errors={formik.errors.miraklClientKey}
-              touched={formik.touched.miraklClientKey}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              <TextField
+                name="miraklClientKey"
+                title="miraklClientKey"
+                value={formik.values.miraklClientKey}
+                errors={formik.errors.miraklClientKey}
+                touched={formik.touched.miraklClientKey}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
 
-              renderError={(errorKey) => {
-                
-              }}
-              horizontalConstraint={13}
-            />
-           
-            <CheckboxInput
-            name='miraklClientKeyIsProduction'
-            value={formik.values.miraklClientKeyIsProduction}
-              onChange={formik.handleChange}
-              aria-label={'is production'}>Is production</CheckboxInput>
-          </Spacings.Inline>
+                renderError={(errorKey) => {
 
+                }}
 
-        </fieldset>
-        <fieldset>
-          <legend>Job Configuration</legend>
-          <Spacings.Inline>
-            <CheckboxInput
-             name='categorySync'
-             value={formik.values.categorySync}
-              onChange={formik.handleChange}
-              aria-label={'Category Sync'} > Category Sync </CheckboxInput>
-            <Spacings.Stack>
-
-              <SelectField
-                title="Mode"
-                name="mode"
-                value={formik.values.mode}
-                onChange={
-                  formik.handleChange
-                }
-                horizontalConstraint={4}
-                options={[
-                  { value: 'job', label: 'JOB' },
-                  { value: 'queue', label: 'QUEUE' },
-                ]}
               />
             </Spacings.Stack>
-
+            <Spacings.Stack >
+              <CheckboxInput id="urlIsProduction"
+                name="urlIsProduction"
+                onChange={formik.handleChange}
+                isChecked={formik.values.urlIsProduction}
+                value='urlIsProduction'
+                aria-label={'is production'}>Is Production</CheckboxInput>
+            </Spacings.Stack>
 
           </Spacings.Inline>
-          <CheckboxInput
-           name='productSync'
-           value={formik.values.productSync}
-            onChange={formik.handleChange}
-            aria-label={'Product Sync'} > Product Sync </CheckboxInput>
-          <CheckboxInput
-          name='offerSync'
-          value={formik.values.offerSync}
-            onChange={formik.handleChange}
-            aria-label={'Offer Sync'} > Offer Sync </CheckboxInput>
+        </CollapsiblePanel>
+
+        <CollapsiblePanel
+          header="Job Configuration"
+          isSticky={true}
+        >
+          <Spacings.Stack>
+            <Spacings.Inline >
+              <CheckboxInput id="categorySync"
+                name="categorySync"
+                onChange={formik.handleChange}
+                isChecked={formik.values.categorySync}
+                value="categorySync"
+                aria-label={'Category Sync'}>Category Sync</CheckboxInput>
+
+              <Spacings.Stack>
+
+                <SelectField
+                  title="Mode"
+                  name="mode"
+                  value={formik.values.mode}
+                  onChange={
+                    formik.handleChange
+                  }
+                  horizontalConstraint={4}
+                  options={[
+                    { value: 'job', label: 'JOB' },
+                    { value: 'queue', label: 'QUEUE' },
+                  ]}
+                />
+              </Spacings.Stack>
 
 
-        </fieldset>
-        <fieldset>
-          <legend>Commercetools Configuration</legend>
-          <LocalizedTextField
-        name="name"
-        title="Name"
-        isRequired
-        selectedLanguage={dataLocale}
-        value={formik.values.name}
-        errors={
-          LocalizedTextField.toFieldErrors(formik.errors).name
-        }
-        touched={formik.touched.name}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
-        </fieldset>
+            </Spacings.Inline>
+            <Spacings.Stack>
+              <CheckboxInput id="productSync"
+                name="productSync"
+                onChange={formik.handleChange}
+                isChecked={formik.values.productSync}
+                value="productSync"
+                aria-label={'Product Sync'}>Product Sync</CheckboxInput>
+              <CheckboxInput id="offerSync"
+                name="offerSync"
+                onChange={formik.handleChange}
+                isChecked={formik.values.offerSync}
+                value="offerSync"
+                aria-label={'Offer Sync'}>Offer Sync</CheckboxInput>
+            </Spacings.Stack>
+          </Spacings.Stack>
+
+
+        </CollapsiblePanel>
+
+        <CollapsiblePanel
+          header="Commercetools Configuration"
+          isSticky={true}
+        >
+
+          <TextField
+            name="ctClientID"
+            title="Client Id"
+            value={formik.values.ctClientID}
+            errors={formik.errors.ctClientID}
+            touched={formik.touched.ctClientID}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+
+            renderError={(errorKey) => {
+
+            }}
+            horizontalConstraint={13}
+          />
+          <TextField
+            name="ctClientSecret"
+            title="Client Secret"
+            value={formik.values.ctClientKey}
+            errors={formik.errors.ctClientKey}
+            touched={formik.touched.ctClientKey}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+
+            renderError={(errorKey) => {
+
+            }}
+            horizontalConstraint={13}
+          />
+          <TextField
+            name="ctProjectKey"
+            title="Project Key"
+            value={formik.values.ctProjectKey}
+            errors={formik.errors.ctProjectKey}
+            touched={formik.touched.ctProjectKey}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+
+            renderError={(errorKey) => {
+
+            }}
+            horizontalConstraint={13}
+          />
+          <TextField
+            name="ctHost"
+            title="Host"
+            value={formik.values.ctHost}
+            errors={formik.errors.ctHost}
+            touched={formik.touched.ctHost}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+
+            renderError={(errorKey) => {
+
+            }}
+            horizontalConstraint={13}
+          />
+          <TextField
+            name="authUrl"
+            title="Auth Url"
+            value={formik.values.authUrl}
+            errors={formik.errors.authUrl}
+            touched={formik.touched.authUrl}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+
+            renderError={(errorKey) => {
+
+            }}
+            horizontalConstraint={13}
+          />
+
+        </CollapsiblePanel>
 
         <PrimaryButton
           type="submit"
@@ -234,7 +275,7 @@ const Settings = (props) => {
           isDisabled={formik.isSubmitting}
         />
       </form>
-    </Spacings.Stack>
+    </Spacings.Stack >
   )
 };
 Settings.displayName = 'Settings';
