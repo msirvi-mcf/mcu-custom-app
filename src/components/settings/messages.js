@@ -14,6 +14,10 @@ export default defineMessages({
     defaultMessage:
       'Please configure the settings for the connector.',
   },
+  settingsUpdated: {
+    id: 'Settings.settingsUpdated',
+    defaultMessage: 'Settings Saved!',
+  },
   noResults: {
     id: 'Settings.noResults',
     defaultMessage: 'There are no settings available in this project.',

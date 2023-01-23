@@ -1,36 +1,31 @@
 import {
-  useMcQuery,
   useMcMutation,
 } from '@commercetools-frontend/application-shell';
 import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
-import { createSyncChannels } from '@commercetools/sync-actions';
+import { actions, useAsyncDispatch } from "@commercetools-frontend/sdk";
+import { useEffect, useState } from "react";
 import {
-  createGraphQlUpdateActions,
   extractErrorFromGraphQlResponse,
-  convertToActionData,
 } from '../../helpers';
 import UpdateSettings from './update-settings.ctp.graphql';
 
 export const useSettings = () => {
-  const [updateChannelDetails, { loading }] = useMcMutation(
+  const [UpdateSettingsDetails, { loading }] = useMcMutation(
     UpdateSettings
   );
 
-  const syncStores = createSyncChannels();
-  const execute = async ({ originalDraft, nextDraft }) => {
-    const actions = syncStores.buildActions(
-      nextDraft,
-      convertToActionData(originalDraft)
-    );
+  const execute = async ({ url }) => {
     try {
-      return await updateChannelDetails({
+      return await UpdateSettingsDetails({
         context: {
           target: GRAPHQL_TARGETS.COMMERCETOOLS_PLATFORM,
         },
         variables: {
-          channelId: originalDraft.id,
-          version: originalDraft.version,
-          actions: createGraphQlUpdateActions(actions),
+          setting: {
+            container: "ConnectorSettingContainer",
+            key: "Url",
+            value: JSON.stringify(url)
+          }
         },
       });
     } catch (graphQlResponse) {
@@ -42,4 +37,35 @@ export const useSettings = () => {
     loading,
     execute,
   };
+}
+export const useSettingsToDashboard = (formData) => {
+  
+  const [data, setdata] = useState(null);
+  const [loading, setloading] = useState(true);
+  const [error, seterror] = useState("");
+  const dispatch = useAsyncDispatch();
+    async function execute(formData) {
+      const baseUrl = formData?.name
+      const settingUrl = "/settings/"
+      const url = baseUrl + settingUrl;
+      console.log(url);
+      try {
+        const result = await dispatch(
+          actions.forwardTo.post({ uri: url, payload: formData, headers: { "ngrok-skip-browser-warning": "69420" } })
+        );
+        // Update state with `result`
+        setdata(result);
+        setloading(false)
+      } catch (error) {
+        // Update state with `error`
+        seterror(error);
+      }
+    }
+   
+
+  return {
+    execute,
+    loading,
+    error
+  }
 }

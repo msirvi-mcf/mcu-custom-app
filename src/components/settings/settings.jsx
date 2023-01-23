@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+// import { useCallback } from 'react';
 import Spacings from '@commercetools-uikit/spacings';
 import { useIntl } from 'react-intl';
 import { BackIcon } from '@commercetools-uikit/icons';
@@ -17,12 +18,24 @@ import CheckboxInput from '@commercetools-uikit/checkbox-input';
 import SelectField from '@commercetools-uikit/select-field';
 import TextField from '@commercetools-uikit/text-field';
 import CollapsiblePanel from '@commercetools-uikit/collapsible-panel';
+import {
+  useSettings,
+  useSettingsToDashboard
+} from '../../hooks/use-settings'
+import {
+  useShowNotification,
+  // useShowApiErrorNotification,
+} from '@commercetools-frontend/actions-global';
+import { DOMAINS, NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 const Settings = (props) => {
   const intl = useIntl();
+  const SaveSettings = useSettings();
+  const SaveSettingsToDashboard = useSettingsToDashboard();
+  const showNotification = useShowNotification();
   const formik = useFormik({
     initialValues: {
       connector: '',
-      name: '',
+      name: '', //url
       miraklApiKey: '',
       miraklAPISecret: '',
       urlIsProduction: null,
@@ -34,8 +47,20 @@ const Settings = (props) => {
       ctProjectKey: '',
     },
     validate,
-    onSubmit: async (formikValues) => {
+    onSubmit:  async (formikValues, formikHelpers) => {
       console.log(formikValues);
+      try {
+        await SaveSettings.execute({url: formikValues.name});
+        await SaveSettingsToDashboard.execute(formikValues);
+        showNotification({
+          kind: 'success',
+          domain: DOMAINS.SIDE,
+          text: intl.formatMessage(messages.settingsUpdated, {}),
+        });
+      } catch (err){
+        console.log(err);
+      }
+      // console.log(formikValues);
       // Do something async
     },
   });
