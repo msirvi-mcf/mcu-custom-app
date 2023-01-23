@@ -9,7 +9,7 @@ const config = {
   cloudIdentifier: 'gcp-us',
   env: {
     development: {
-      initialProjectKey: 'mcu-test',
+      initialProjectKey: 'tmc',
     },
 
     production: {
@@ -60,12 +60,11 @@ const config = {
       defaultLabel: 'Logs',
       labelAllLocales: [],
       permissions: [PERMISSIONS.View],
-    }
-
+    },
   ],
   additionalEnv: {
-    externalApiUrl: "${env:EXTERNAL_API_URL}"
-  }
+    externalApiUrl: '${env:EXTERNAL_API_URL}',
+  },
 };
 
 export default config;
