@@ -58,17 +58,24 @@ const Settings = (props) => {
     validate,
     onSubmit: async (formikValues, formikHelpers) => {
       console.log(formikValues);
-      // try {
-      //   await SaveSettings.execute({ url: formikValues.name });
-      //   await SaveSettingsToDashboard.execute(formikValues);
-      //   showNotification({
-      //     kind: 'success',
-      //     domain: DOMAINS.SIDE,
-      //     text: intl.formatMessage(messages.settingsUpdated, {}),
-      //   });
-      // } catch (err) {
-      //   console.log(err);
-      // }
+      try {
+        if (formikValues.connectorEnabled && formikValues.backendURL) {
+          await SaveSettings.execute({ url: formikValues.backendURL });
+        }
+        await SaveSettingsToDashboard.execute(formikValues);
+        showNotification({
+          kind: 'success',
+          domain: DOMAINS.SIDE,
+          text: intl.formatMessage(messages.settingsUpdated, {}),
+        });
+      } catch (err) {
+        console.error(err);
+        showNotification({
+          kind: 'error',
+          domain: DOMAINS.SIDE,
+          text: err,
+        });
+      }
     },
   });
 
@@ -94,7 +101,7 @@ const Settings = (props) => {
         <Spacings.Stack scale="xl">
           <Spacings.Inline alignItems="center">
             <Label htmlFor="connectorEnabled" isBold>
-              Markeplace Connector:
+              Enable Markeplace Connector:
             </Label>
             <ToggleInput
               id="connectorEnabled"
