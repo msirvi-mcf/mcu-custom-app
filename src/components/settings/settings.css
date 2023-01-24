@@ -11,12 +11,20 @@
   grid-row: 2;
 }
 
+#urlConfigurationPanel + div #urlConfigurationInputs * {
+  margin-top: 0 !important;
+}
+
 #jobConfigurationPanel + div #modeSelect > span > div > div {
   display: grid;
   grid-template-columns: 50px 150px;
   align-items: center;
   height: auto;
   width: 200px;
+}
+
+#jobConfigurationPanel + div div {
+  margin-top: 0 !important;
 }
 
 #uploadFile {

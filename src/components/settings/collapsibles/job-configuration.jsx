@@ -36,7 +36,7 @@ const JobConfiguration = ({ formik }) => {
         <div id="modeSelect">
           <Spacings.Inline alignItems="center">
             <SelectField
-              title="Mode"
+              title="Mode:"
               name="mode"
               value={formik?.values?.mode || ''}
               onChange={formik.handleChange}

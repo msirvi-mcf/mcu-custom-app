@@ -13,7 +13,7 @@ const UrlConfiguration = ({ formik }) => {
           <Spacings.Stack scale="xs">
             <TextField
               name="backendURL"
-              title="Backend URL"
+              title="Backend URL:"
               value={formik?.values?.backendURL || ''}
               errors={formik.errors.backendURL}
               touched={formik.touched.backendURL}
@@ -24,7 +24,7 @@ const UrlConfiguration = ({ formik }) => {
 
             <TextField
               name="miraklApiKey"
-              title="Mirakl API key"
+              title="Mirakl API Key:"
               value={formik?.values?.miraklApiKey || ''}
               touched={formik.touched.miraklApiKey}
               onChange={formik.handleChange}
@@ -33,7 +33,7 @@ const UrlConfiguration = ({ formik }) => {
 
             <TextField
               name="miraklAPISecret"
-              title="Mirakl API Secret"
+              title="Mirakl API Secret:"
               value={formik?.values?.miraklAPISecret || ''}
               errors={formik.errors.miraklAPISecret}
               touched={formik.touched.miraklAPISecret}
@@ -43,7 +43,7 @@ const UrlConfiguration = ({ formik }) => {
 
             <TextField
               name="miraklClientKey"
-              title="Mirakl Client Key"
+              title="Mirakl Client Key:"
               value={formik?.values?.miraklClientKey || ''}
               errors={formik.errors.miraklClientKey}
               touched={formik.touched.miraklClientKey}
@@ -58,10 +58,10 @@ const UrlConfiguration = ({ formik }) => {
           onChange={formik.handleChange}
           isChecked={formik.values.urlIsProduction}
           value="urlIsProduction"
-          aria-label={'is production'}
+          aria-label={'is production?'}
         >
           <Label isBold htmlFor="urlIsProduction">
-            Is Production
+            Is Production?
           </Label>
         </CheckboxInput>
       </Spacings.Stack>
