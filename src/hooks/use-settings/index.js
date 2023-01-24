@@ -1,4 +1,6 @@
 export {
   useSettings,
-  useSettingsToDashboard
+  useSettingsToDashboard,
+  useGetSettingsData,
+  useGetSettingsCTP
 } from './use-settings';
