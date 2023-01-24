@@ -10,7 +10,7 @@ const UrlConfiguration = ({ formik }) => {
     <CollapsiblePanel header="Url Configuration" id="urlConfigurationPanel">
       <Spacings.Stack scale="l">
         <div id="urlConfigurationInputs">
-          <Spacings.Stack scale="l">
+          <Spacings.Stack scale="s">
             <TextField
               name="backendURL"
               title="Backend URL"
