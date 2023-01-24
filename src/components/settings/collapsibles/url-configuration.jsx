@@ -8,9 +8,9 @@ import CollapsiblePanel from '@commercetools-uikit/collapsible-panel';
 const UrlConfiguration = ({ formik }) => {
   return (
     <CollapsiblePanel header="Url Configuration" id="urlConfigurationPanel">
-      <Spacings.Stack scale="l">
+      <Spacings.Stack scale="s">
         <div id="urlConfigurationInputs">
-          <Spacings.Stack scale="s">
+          <Spacings.Stack scale="xs">
             <TextField
               name="backendURL"
               title="Backend URL"
