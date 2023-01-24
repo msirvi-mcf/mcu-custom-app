@@ -1,0 +1,6 @@
+query getSettings ($key : String, $container: String) {
+  customObject(key: $key,container: $container) {
+    key,
+    value
+  }
+}
