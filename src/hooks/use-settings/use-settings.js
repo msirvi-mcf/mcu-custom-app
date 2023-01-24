@@ -36,6 +36,7 @@ export const useSettings = () => {
     execute,
   };
 };
+
 export const useSettingsToDashboard = (formData) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -46,7 +47,7 @@ export const useSettingsToDashboard = (formData) => {
       const baseUrl = formData?.backendURL;
       const settingUrl = '/settings/';
       const url = baseUrl + settingUrl;
-      console.log(url);
+
       try {
         await dispatch(
           actions.forwardTo.get({
