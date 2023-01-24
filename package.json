@@ -57,6 +57,7 @@
     "@commercetools-uikit/text": "^15.6.0",
     "@commercetools-uikit/text-field": "^15.6.0",
     "@commercetools-uikit/text-input": "^15.6.0",
+    "@commercetools-uikit/toggle-input": "^15.10.0",
     "@commercetools/sync-actions": "^5.1.0",
     "@formatjs/cli": "4.8.4",
     "@manypkg/cli": "0.19.2",
