@@ -1,0 +1,25 @@
+{
+  "syncTypes": [
+    {
+      "id": "categoryIsSync",
+      "label": "Category Sync"
+    },
+    {
+      "id": "productIsSync",
+      "label": "Product Sync"
+    },
+    {
+      "id": "offerIsSync",
+      "label": "Offer Sync"
+    },
+    {
+      "id": "testIsSync",
+      "label": "Test Sync"
+    }
+  ],
+  "modes": [
+    { "value": "job", "label": "JOB" },
+    { "value": "queue", "label": "QUEUE" },
+    { "value": "test", "label": "TEST" }
+  ]
+}

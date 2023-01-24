@@ -1,0 +1,20 @@
+#urlConfigurationPanel + div #urlConfigurationInputs > div > div > div {
+  display: grid;
+  grid-template-columns: 120px 250px;
+  grid-template-rows: 1fr 1fr;
+  align-items: center;
+  height: 60px;
+} 
+
+#urlConfigurationPanel + div #urlConfigurationInputs > div > div > div .css-nko5g8-detailStyles {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+#jobConfigurationPanel + div #modeSelect > span > div > div {
+  display: grid;
+  grid-template-columns: 50px 150px;
+  align-items: center;
+  height: auto;
+  width: 200px;
+}

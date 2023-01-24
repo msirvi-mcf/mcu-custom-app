@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
-// import { useCallback } from 'react';
+import './settings.css';
+import UrlConfiguration from './collapsibles/url-configuration';
+import JobConfiguration from './collapsibles/job-configuration';
 import Spacings from '@commercetools-uikit/spacings';
 import { useIntl } from 'react-intl';
 import { BackIcon } from '@commercetools-uikit/icons';
@@ -25,41 +27,49 @@ import {
 } from '@commercetools-frontend/actions-global';
 import { DOMAINS, NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 
+import jobConfigData from '../../data/jobConfigData.json';
+
 const Settings = (props) => {
   const intl = useIntl();
+  const { syncTypes } = jobConfigData;
   const SaveSettings = useSettings();
   const SaveSettingsToDashboard = useSettingsToDashboard();
   const showNotification = useShowNotification();
+  const initialValues = {
+    connectorEnabled: false,
+    backendURL: '',
+    miraklApiKey: '',
+    miraklAPISecret: '',
+    urlIsProduction: false,
+    miraklClientKey: '',
+    ctClientID: '',
+    ctClientSecret: '',
+    authUrl: '',
+    ctHost: '',
+    ctProjectKey: '',
+    mode: '',
+  };
+
+  syncTypes.forEach((type) => {
+    initialValues[type.id] = false;
+  });
+
   const formik = useFormik({
-    initialValues: {
-      connectorEnabled: false,
-      name: '', //url
-      miraklApiKey: '',
-      miraklAPISecret: '',
-      urlIsProduction: null,
-      miraklClientKey: '',
-      ctClientID: '',
-      ctClientSecret: '',
-      authUrl: '',
-      ctHost: '',
-      ctProjectKey: '',
-    },
+    initialValues,
     validate,
     onSubmit: async (formikValues, formikHelpers) => {
       console.log(formikValues);
-      try {
-        await SaveSettings.execute({ url: formikValues.name });
-        await SaveSettingsToDashboard.execute(formikValues);
-        showNotification({
-          kind: 'success',
-          domain: DOMAINS.SIDE,
-          text: intl.formatMessage(messages.settingsUpdated, {}),
-        });
-      } catch (err) {
-        console.log(err);
-      }
-      // console.log(formikValues);
-      // Do something async
+      // try {
+      //   await SaveSettings.execute({ url: formikValues.name });
+      //   await SaveSettingsToDashboard.execute(formikValues);
+      //   showNotification({
+      //     kind: 'success',
+      //     domain: DOMAINS.SIDE,
+      //     text: intl.formatMessage(messages.settingsUpdated, {}),
+      //   });
+      // } catch (err) {
+      //   console.log(err);
+      // }
     },
   });
   return (
@@ -81,9 +91,9 @@ const Settings = (props) => {
       </Constraints.Horizontal>
       <form onSubmit={formik.handleSubmit}>
         <Spacings.Stack scale="xl">
-          <Spacings.Stack scale="xs">
+          <Spacings.Inline alignItems="center">
             <Label htmlFor="connectorEnabled" isBold>
-              Markeplace Connector
+              Markeplace Connector:
             </Label>
             <ToggleInput
               id="connectorEnabled"
@@ -93,124 +103,12 @@ const Settings = (props) => {
               value="connectorEnabled"
               size="small"
             />
-          </Spacings.Stack>
+          </Spacings.Inline>
 
           {formik.values.connectorEnabled && (
-            <Spacings.Stack scale="xs">
-              <CollapsiblePanel header="Url Configuration">
-                <Spacings.Inline
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Spacings.Stack>
-                    <TextField
-                      name="name"
-                      title="Backend URL"
-                      value={formik.values.name}
-                      errors={formik.errors.name}
-                      touched={formik.touched.name}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      isRequired
-                    />
-                    <TextField
-                      name="miraklApiKey"
-                      title="Mirakl API key"
-                      value={formik.values.miraklApiKey}
-                      touched={formik.touched.miraklApiKey}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                    />
-
-                    <TextField
-                      name="miraklAPISecret"
-                      title="Mirakl API Secret"
-                      value={formik.values.miraklAPISecret}
-                      errors={formik.errors.miraklAPISecret}
-                      touched={formik.touched.miraklAPISecret}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      renderError={(errorKey) => {}}
-                    />
-
-                    <TextField
-                      name="miraklClientKey"
-                      title="miraklClientKey"
-                      value={formik.values.miraklClientKey}
-                      errors={formik.errors.miraklClientKey}
-                      touched={formik.touched.miraklClientKey}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      renderError={(errorKey) => {}}
-                    />
-                  </Spacings.Stack>
-                  <Spacings.Stack>
-                    <CheckboxInput
-                      id="urlIsProduction"
-                      name="urlIsProduction"
-                      onChange={formik.handleChange}
-                      isChecked={formik.values.urlIsProduction}
-                      value="urlIsProduction"
-                      aria-label={'is production'}
-                    >
-                      Is Production
-                    </CheckboxInput>
-                  </Spacings.Stack>
-                </Spacings.Inline>
-              </CollapsiblePanel>
-
-              <CollapsiblePanel header="Job Configuration" isSticky={true}>
-                <Spacings.Stack>
-                  <Spacings.Inline>
-                    <CheckboxInput
-                      id="categorySync"
-                      name="categorySync"
-                      onChange={formik.handleChange}
-                      isChecked={formik.values.categorySync}
-                      value="categorySync"
-                      aria-label={'Category Sync'}
-                    >
-                      Category Sync
-                    </CheckboxInput>
-
-                    <Spacings.Stack>
-                      <SelectField
-                        title="Mode"
-                        name="mode"
-                        value={formik.values.mode}
-                        onChange={formik.handleChange}
-                        horizontalConstraint={4}
-                        options={[
-                          { value: 'job', label: 'JOB' },
-                          { value: 'queue', label: 'QUEUE' },
-                        ]}
-                      />
-                    </Spacings.Stack>
-                  </Spacings.Inline>
-                  <Spacings.Stack>
-                    <CheckboxInput
-                      id="productSync"
-                      name="productSync"
-                      onChange={formik.handleChange}
-                      isChecked={formik.values.productSync}
-                      value="productSync"
-                      aria-label={'Product Sync'}
-                    >
-                      Product Sync
-                    </CheckboxInput>
-                    <CheckboxInput
-                      id="offerSync"
-                      name="offerSync"
-                      onChange={formik.handleChange}
-                      isChecked={formik.values.offerSync}
-                      value="offerSync"
-                      aria-label={'Offer Sync'}
-                    >
-                      Offer Sync
-                    </CheckboxInput>
-                  </Spacings.Stack>
-                </Spacings.Stack>
-              </CollapsiblePanel>
+            <Spacings.Stack scale="m">
+              <UrlConfiguration formik={formik} />
+              <JobConfiguration formik={formik} />
 
               <CollapsiblePanel
                 header="Commercetools Configuration"
@@ -219,7 +117,7 @@ const Settings = (props) => {
                 <TextField
                   name="ctClientID"
                   title="Client Id"
-                  value={formik.values.ctClientID}
+                  value={formik?.values?.ctClientID || ''}
                   errors={formik.errors.ctClientID}
                   touched={formik.touched.ctClientID}
                   onChange={formik.handleChange}
@@ -230,7 +128,7 @@ const Settings = (props) => {
                 <TextField
                   name="ctClientSecret"
                   title="Client Secret"
-                  value={formik.values.ctClientKey}
+                  value={formik?.values?.ctClientKey || ''}
                   errors={formik.errors.ctClientKey}
                   touched={formik.touched.ctClientKey}
                   onChange={formik.handleChange}
@@ -241,7 +139,7 @@ const Settings = (props) => {
                 <TextField
                   name="ctProjectKey"
                   title="Project Key"
-                  value={formik.values.ctProjectKey}
+                  value={formik?.values?.ctProjectKey || ''}
                   errors={formik.errors.ctProjectKey}
                   touched={formik.touched.ctProjectKey}
                   onChange={formik.handleChange}
@@ -252,7 +150,7 @@ const Settings = (props) => {
                 <TextField
                   name="ctHost"
                   title="Host"
-                  value={formik.values.ctHost}
+                  value={formik?.values?.ctHost || ''}
                   errors={formik.errors.ctHost}
                   touched={formik.touched.ctHost}
                   onChange={formik.handleChange}
@@ -263,7 +161,7 @@ const Settings = (props) => {
                 <TextField
                   name="authUrl"
                   title="Auth Url"
-                  value={formik.values.authUrl}
+                  value={formik?.values?.authUrl || ''}
                   errors={formik.errors.authUrl}
                   touched={formik.touched.authUrl}
                   onChange={formik.handleChange}
