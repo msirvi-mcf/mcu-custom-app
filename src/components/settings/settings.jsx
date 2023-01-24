@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import './settings.css';
 import UrlConfiguration from './collapsibles/url-configuration';
 import JobConfiguration from './collapsibles/job-configuration';
+import CommerceToolsConfigutation from './collapsibles/commerce-tools-configutation';
 import Spacings from '@commercetools-uikit/spacings';
 import { useIntl } from 'react-intl';
 import { BackIcon } from '@commercetools-uikit/icons';
@@ -30,11 +31,13 @@ import { DOMAINS, NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 import jobConfigData from '../../data/jobConfigData.json';
 
 const Settings = (props) => {
-  const intl = useIntl();
   const { syncTypes } = jobConfigData;
+
+  const intl = useIntl();
   const SaveSettings = useSettings();
   const SaveSettingsToDashboard = useSettingsToDashboard();
   const showNotification = useShowNotification();
+
   const initialValues = {
     connectorEnabled: false,
     backendURL: '',
@@ -89,6 +92,7 @@ const Settings = (props) => {
           <Text.Body intlMessage={messages.demoHint} />
         </ContentNotification>
       </Constraints.Horizontal>
+
       <form onSubmit={formik.handleSubmit}>
         <Spacings.Stack scale="xl">
           <Spacings.Inline alignItems="center">
@@ -109,67 +113,7 @@ const Settings = (props) => {
             <Spacings.Stack scale="m">
               <UrlConfiguration formik={formik} />
               <JobConfiguration formik={formik} />
-
-              <CollapsiblePanel
-                header="Commercetools Configuration"
-                isSticky={true}
-              >
-                <TextField
-                  name="ctClientID"
-                  title="Client Id"
-                  value={formik?.values?.ctClientID || ''}
-                  errors={formik.errors.ctClientID}
-                  touched={formik.touched.ctClientID}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  renderError={(errorKey) => {}}
-                  horizontalConstraint={13}
-                />
-                <TextField
-                  name="ctClientSecret"
-                  title="Client Secret"
-                  value={formik?.values?.ctClientKey || ''}
-                  errors={formik.errors.ctClientKey}
-                  touched={formik.touched.ctClientKey}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  renderError={(errorKey) => {}}
-                  horizontalConstraint={13}
-                />
-                <TextField
-                  name="ctProjectKey"
-                  title="Project Key"
-                  value={formik?.values?.ctProjectKey || ''}
-                  errors={formik.errors.ctProjectKey}
-                  touched={formik.touched.ctProjectKey}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  renderError={(errorKey) => {}}
-                  horizontalConstraint={13}
-                />
-                <TextField
-                  name="ctHost"
-                  title="Host"
-                  value={formik?.values?.ctHost || ''}
-                  errors={formik.errors.ctHost}
-                  touched={formik.touched.ctHost}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  renderError={(errorKey) => {}}
-                  horizontalConstraint={13}
-                />
-                <TextField
-                  name="authUrl"
-                  title="Auth Url"
-                  value={formik?.values?.authUrl || ''}
-                  errors={formik.errors.authUrl}
-                  touched={formik.touched.authUrl}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  renderError={(errorKey) => {}}
-                  horizontalConstraint={13}
-                />
-              </CollapsiblePanel>
+              <CommerceToolsConfigutation formik={formik} />
             </Spacings.Stack>
           )}
 
