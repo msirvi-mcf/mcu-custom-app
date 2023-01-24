@@ -45,12 +45,8 @@ const Settings = (props) => {
     miraklAPISecret: '',
     urlIsProduction: false,
     miraklClientKey: '',
-    ctClientID: '',
-    ctClientSecret: '',
-    authUrl: '',
-    ctHost: '',
-    ctProjectKey: '',
     mode: '',
+    ctConfigFile: null,
   };
 
   syncTypes.forEach((type) => {
@@ -75,6 +71,7 @@ const Settings = (props) => {
       // }
     },
   });
+
   return (
     <Spacings.Stack scale="m">
       <Spacings.Stack scale="xs">
