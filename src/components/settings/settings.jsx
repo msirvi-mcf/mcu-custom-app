@@ -17,7 +17,12 @@ import FlatButton from '@commercetools-uikit/flat-button';
 import { useFormik } from 'formik';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import validate from './validate';
-import { useSettings, useSettingsToDashboard, useGetSettingsCTP, useGetSettingsData } from '../../hooks/use-settings';
+import {
+  useSettings,
+  useSettingsToDashboard,
+  useGetSettingsCTP,
+  useGetSettingsData,
+} from '../../hooks/use-settings';
 import {
   useShowNotification,
   // useShowApiErrorNotification,
@@ -30,22 +35,26 @@ const Settings = (props) => {
   const { syncTypes } = jobConfigData;
 
   const intl = useIntl();
-  const {baseurl,error,loading} = useGetSettingsCTP();
+  const { baseurl, error, loading } = useGetSettingsCTP();
   const GetSettingsData = useGetSettingsData();
   const SaveSettings = useSettings();
   const SaveSettingsToDashboard = useSettingsToDashboard();
   const showNotification = useShowNotification();
-  
-    // if(baseurl){
-    //   GetSettingsData.execute(baseurl).then(result => {
-    //      console.log(result?.data);
-    //   }).catch((err)=> {
-    //     console.log(err);
-    //   });
-      
-    // }
 
-  let initialValues = {
+  // if(baseurl){
+  //   GetSettingsData.execute(baseurl).then(result => {
+  //      console.log(result?.data);
+  //   }).catch((err)=> {
+  //     console.log(err);
+  //   });
+
+  // }
+
+  const refreshCacheHandler = () => {
+    alert('Cache Refreshed!');
+  };
+
+  const initialValues = {
     connectorEnabled: false,
     backendURL: '',
     miraklOperatorKey: '',
@@ -64,7 +73,7 @@ const Settings = (props) => {
       console.log(formikValues);
       try {
         if (formikValues.connectorEnabled && formikValues.backendURL) {
-          console.log("backedn-----"+formikValues.backendURL);
+          console.log('backedn-----' + formikValues.backendURL);
           await SaveSettings.execute({ url: formikValues.backendURL });
         }
         await SaveSettingsToDashboard.execute(formikValues);
@@ -96,12 +105,6 @@ const Settings = (props) => {
         <Text.Headline as="h2" intlMessage={messages.title} />
       </Spacings.Stack>
 
-      {/* <Constraints.Horizontal max={13}>
-        <ContentNotification type="info">
-          <Text.Body intlMessage={messages.demoHint} />
-        </ContentNotification>
-      </Constraints.Horizontal> */}
-
       <form onSubmit={formik.handleSubmit}>
         <Spacings.Stack scale="xl">
           <Spacings.Inline alignItems="center">
@@ -118,6 +121,27 @@ const Settings = (props) => {
             />
           </Spacings.Inline>
 
+          <div className="top-bar">
+            <Spacings.Inline justifyContent="flex-end">
+              <PrimaryButton
+                id="refreshCache"
+                type="submit"
+                style={{ width: 'fit-content' }}
+                label="Refresh Cache"
+                onClick={refreshCacheHandler}
+                isDisabled={formik.isSubmitting}
+              />
+              <PrimaryButton
+                id="saveButton"
+                type="submit"
+                style={{ width: 'fit-content' }}
+                label="Save"
+                onClick={formik.handleSubmit}
+                isDisabled={formik.isSubmitting}
+              />
+            </Spacings.Inline>
+          </div>
+
           {formik.values.connectorEnabled && (
             <Spacings.Stack scale="m">
               <UrlConfiguration formik={formik} />
@@ -125,14 +149,6 @@ const Settings = (props) => {
               <CommerceToolsConfigutation formik={formik} />
             </Spacings.Stack>
           )}
-
-          <PrimaryButton
-            type="submit"
-            style={{ width: 'fit-content' }}
-            label="Save"
-            onClick={formik.handleSubmit}
-            isDisabled={formik.isSubmitting}
-          />
         </Spacings.Stack>
       </form>
     </Spacings.Stack>

@@ -1,10 +1,14 @@
+label[for="connectorEnabled"]:last-child:focus-within {
+  outline: none;
+}
+
 #urlConfigurationPanel + div #urlConfigurationInputs > div > span {
   margin-bottom: 25px !important;
 }
 
 #urlConfigurationPanel + div #urlConfigurationInputs > div > span > div:first-child > div {
   display: grid;
-  grid-template-columns: 150px 250px;
+  grid-template-columns: 150px 350px;
   grid-template-rows: 1fr 1fr;
   align-items: center;
   height: 32px;
@@ -50,6 +54,14 @@
   min-height: 32px;
 }
 
+#jobConfigurationPanel + div div[aria-labelledby="jobConfigurationPanel"] > span > div > span > span > label:first-child {
+  min-width: 100px;
+}
+
+#jobConfigurationPanel + div div[aria-labelledby="jobConfigurationPanel"] > span > div > span > span > label:last-child:focus-within {
+  outline: none;
+}
+
 #jobConfigurationPanel + div div {
   margin-top: 0 !important;
 }
@@ -61,6 +73,10 @@
 	overflow: hidden;
 	position: absolute;
 	z-index: -1;
+}
+
+#ctConfigurationPanel {
+  justify-content: flex-start;
 }
 
 #ctConfigurationPanel + div label {
