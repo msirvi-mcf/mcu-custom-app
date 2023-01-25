@@ -1,0 +1,41 @@
+{
+  "syncTypes": [
+    {
+      "id": "categoryIsSync",
+      "label": "Category Sync",
+      "modeId": "categoryIsSyncMode",
+      "modes": [
+        { "value": "job", "label": "JOB" },
+        { "value": "queue", "label": "QUEUE" }
+      ]
+    },
+    {
+      "id": "productIsSync",
+      "label": "Product Sync",
+      "modeId": "productIsSyncMode",
+      "modes": [
+        { "value": "job", "label": "JOB" },
+        { "value": "queue", "label": "QUEUE" }
+      ]
+    },
+    {
+      "id": "offerIsSync",
+      "label": "Offer Sync",
+      "modeId": "offerIsSyncMode",
+      "modes": [
+        { "value": "job", "label": "JOB" },
+        { "value": "queue", "label": "QUEUE" }
+      ]
+    },
+    {
+      "id": "orderIsSync",
+      "label": "Order Sync",
+      "modeId": "orderIsSyncMode",
+      "modes": [
+        { "value": "job", "label": "JOB" },
+        { "value": "queue", "label": "QUEUE" }
+      ]
+    }
+  ]
+  
+}

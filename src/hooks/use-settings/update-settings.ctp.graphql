@@ -1,16 +1,7 @@
-mutation UpdateSettings(
-  $channelId: String!
-  $version: Long!
-  $actions: [ChannelUpdateAction!]!
-) {
-  updateChannel(id: $channelId, version: $version, actions: $actions) {
-    id
-    version
+mutation UpdateSettings($setting: CustomObjectDraft!){
+  createOrUpdateCustomObject(draft: $setting) {
+    container
     key
-    roles
-    nameAllLocales {
-      locale
-      value
-    }
+    value
   }
 }
