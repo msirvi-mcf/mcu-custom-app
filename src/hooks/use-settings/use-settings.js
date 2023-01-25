@@ -71,8 +71,8 @@ export const useSettingsToDashboard = () => {
 export const useGetSettingsCTP = () => {
   const { data, error, loading } = useMcQuery(getSettings, {
     variables: {
-      key: 'url',
-      container: 'settingcontainer',
+      key: 'Url',
+      container: 'ConnectorSettingContainer',
     },
     context: {
       target: GRAPHQL_TARGETS.COMMERCETOOLS_PLATFORM,
@@ -87,36 +87,21 @@ export const useGetSettingsCTP = () => {
 };
 
 export const useGetSettingsData = () => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const dispatch = useAsyncDispatch();
 
   async function execute(baseurl) {
     const settingUrl = '/settings/';
     const url = baseurl + settingUrl;
-    // console.log(url);
-    try {
-      const result = await dispatch(
+    console.log(url);
+      return await dispatch(
         actions.forwardTo.get({
           uri: url,
           headers: { 'ngrok-skip-browser-warning': '69420' },
         })
       );
-
-      // Update state with `result`
-      setData(result);
-      setLoading(false);
-    } catch (error) {
-      // Update state with `error`
-      setError(error);
-    }
   }
 
   return {
-    execute,
-    data,
-    loading,
-    error,
+    execute
   };
 };
