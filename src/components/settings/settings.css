@@ -19,9 +19,9 @@ label[for="connectorEnabled"]:last-child:focus-within {
 .top-bar {
   padding: 12px 10px;
   position: fixed;
-  z-index: 99;
+  z-index: 100;
   width: calc(100% - 245px);
-  right: 19px;
+  right: 17px;
   background: #fff;
   min-height: 56px;
   margin-top: 0 !important;

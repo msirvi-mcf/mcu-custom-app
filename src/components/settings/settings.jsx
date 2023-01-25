@@ -24,10 +24,7 @@ import {
   useGetSettingsCTP,
   useGetSettingsData,
 } from '../../hooks/use-settings';
-import {
-  useShowNotification,
-  // useShowApiErrorNotification,
-} from '@commercetools-frontend/actions-global';
+import { useShowNotification } from '@commercetools-frontend/actions-global';
 import { DOMAINS } from '@commercetools-frontend/constants';
 
 import jobConfigData from '../../data/jobConfigData.json';
@@ -105,8 +102,9 @@ const Settings = (props) => {
           showNotification({
             kind: 'error',
             domain: DOMAINS.PAGE,
-            text: JSON.stringify(err.body.error),
+            text: JSON.stringify(err?.body?.error || err?.message || 'Error'),
           });
+          setIsLoading(false);
         });
     }
   }, [GetSettingsData, baseurl, formik, initialValues, showNotification]);
