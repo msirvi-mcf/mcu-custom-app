@@ -38,7 +38,6 @@ export const useSettings = () => {
 };
 
 export const useSettingsToDashboard = () => {
-
   const dispatch = useAsyncDispatch();
   async function execute(formData) {
     if (formData.connectorEnabled) {
@@ -64,7 +63,7 @@ export const useSettingsToDashboard = () => {
   }
 
   return {
-    execute
+    execute,
   };
 };
 
