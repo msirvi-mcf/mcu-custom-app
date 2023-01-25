@@ -3,6 +3,7 @@ import CollapsiblePanel from '@commercetools-uikit/collapsible-panel';
 import Label from '@commercetools-uikit/label';
 import Spacings from '@commercetools-uikit/spacings';
 import { useState } from 'react';
+import Tooltip from '@commercetools-uikit/tooltip';
 
 const CommerceToolsConfigutation = ({ formik }) => {
   const [fileUploaded, setFileUploaded] = useState('');
@@ -29,11 +30,16 @@ const CommerceToolsConfigutation = ({ formik }) => {
     >
       <Spacings.Stack>
         <Spacings.Inline alignItems="center">
-          <Label htmlFor="uploadFile">Upload Configuration File</Label>
+          <Tooltip
+            placement="right"
+            title="Upload .env format config file only"
+          >
+            <Label htmlFor="uploadFile">Upload Configuration File</Label>
+          </Tooltip>
           <input
             type="file"
             id="uploadFile"
-            accept=".json"
+            accept=".env"
             onChange={fileUploadHandler}
           />
           {fileUploaded && <span>File Uploaded: {fileUploaded}</span>}

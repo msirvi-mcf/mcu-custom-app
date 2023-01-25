@@ -37,46 +37,34 @@ export const useSettings = () => {
   };
 };
 
-export const useSettingsToDashboard = (formData) => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+export const useSettingsToDashboard = () => {
+
   const dispatch = useAsyncDispatch();
   async function execute(formData) {
     if (formData.connectorEnabled) {
       const baseUrl = formData?.backendURL;
       const settingUrl = '/settings/';
       const url = baseUrl + settingUrl;
-
-      try {
-        await dispatch(
-          actions.forwardTo.get({
-            uri: url,
-            headers: { 'ngrok-skip-browser-warning': '69420' },
-          })
-        );
-        const result = await dispatch(
-          actions.forwardTo.post({
-            uri: url,
-            payload: formData,
-            headers: { 'ngrok-skip-browser-warning': '69420' },
-          })
-        );
-        // Update state with `result`
-        setData(result);
-        setLoading(false);
-      } catch (error) {
-        // Update state with `error`
-        setError(error);
-      }
+      await dispatch(
+        actions.forwardTo.get({
+          uri: url,
+          headers: { 'ngrok-skip-browser-warning': '69420' },
+        })
+      );
+      const result = await dispatch(
+        actions.forwardTo.post({
+          uri: url,
+          payload: formData,
+          headers: { 'ngrok-skip-browser-warning': '69420' },
+        })
+      );
+      // Update state with `result`
+      console.log('result:---' + result);
     }
   }
 
   return {
-    execute,
-    data,
-    loading,
-    error,
+    execute
   };
 };
 

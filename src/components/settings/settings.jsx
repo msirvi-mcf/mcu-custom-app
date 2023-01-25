@@ -17,10 +17,6 @@ import FlatButton from '@commercetools-uikit/flat-button';
 import { useFormik } from 'formik';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import validate from './validate';
-import CheckboxInput from '@commercetools-uikit/checkbox-input';
-import SelectField from '@commercetools-uikit/select-field';
-import TextField from '@commercetools-uikit/text-field';
-import CollapsiblePanel from '@commercetools-uikit/collapsible-panel';
 import { useSettings, useSettingsToDashboard } from '../../hooks/use-settings';
 import {
   useShowNotification,
@@ -65,15 +61,15 @@ const Settings = (props) => {
         await SaveSettingsToDashboard.execute(formikValues);
         showNotification({
           kind: 'success',
-          domain: DOMAINS.SIDE,
+          domain: DOMAINS.PAGE,
           text: intl.formatMessage(messages.settingsUpdated, {}),
         });
       } catch (err) {
         console.error(err);
         showNotification({
           kind: 'error',
-          domain: DOMAINS.SIDE,
-          text: err,
+          domain: DOMAINS.PAGE,
+          text: JSON.stringify(err.body.error),
         });
       }
     },
@@ -91,11 +87,11 @@ const Settings = (props) => {
         <Text.Headline as="h2" intlMessage={messages.title} />
       </Spacings.Stack>
 
-      <Constraints.Horizontal max={13}>
+      {/* <Constraints.Horizontal max={13}>
         <ContentNotification type="info">
           <Text.Body intlMessage={messages.demoHint} />
         </ContentNotification>
-      </Constraints.Horizontal>
+      </Constraints.Horizontal> */}
 
       <form onSubmit={formik.handleSubmit}>
         <Spacings.Stack scale="xl">
@@ -124,7 +120,7 @@ const Settings = (props) => {
           <PrimaryButton
             type="submit"
             style={{ width: 'fit-content' }}
-            label="Submit"
+            label="Save"
             onClick={formik.handleSubmit}
             isDisabled={formik.isSubmitting}
           />
