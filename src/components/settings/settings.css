@@ -1,12 +1,16 @@
-#urlConfigurationPanel + div #urlConfigurationInputs > div > div > div {
+#urlConfigurationPanel + div #urlConfigurationInputs > div > span {
+  margin-bottom: 25px !important;
+}
+
+#urlConfigurationPanel + div #urlConfigurationInputs > div > span > div:first-child > div {
   display: grid;
-  grid-template-columns: 120px 250px;
+  grid-template-columns: 150px 250px;
   grid-template-rows: 1fr 1fr;
   align-items: center;
-  height: 60px;
+  height: 32px;
 } 
 
-#urlConfigurationPanel + div #urlConfigurationInputs > div > div > div .css-nko5g8-detailStyles {
+#urlConfigurationPanel + div #urlConfigurationInputs > div > span > div > div div:nth-child(3) {
   grid-column: 2;
   grid-row: 2;
 }
@@ -15,12 +19,35 @@
   margin-top: 0 !important;
 }
 
+#jobConfigurationPanel + div {
+  z-index: 99;
+}
+
 #jobConfigurationPanel + div #modeSelect > span > div > div {
   display: grid;
   grid-template-columns: 50px 150px;
+  grid-template-rows: 1fr 1fr;
   align-items: center;
-  height: auto;
+  height: 32px;
   width: 200px;
+}
+
+#jobConfigurationPanel + div #scheduleSelect > span > div:first-child > div {
+  display: grid;
+  grid-template-columns: 80px 150px;
+  grid-template-rows: 1fr 1fr;
+  align-items: center;
+  height: 32px;
+  width: auto;
+}
+
+#jobConfigurationPanel + div #scheduleSelect > span > div > div div:nth-child(3) {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+#jobConfigurationPanel + div div[aria-labelledby="jobConfigurationPanel"] > span > div > span {
+  min-height: 32px;
 }
 
 #jobConfigurationPanel + div div {

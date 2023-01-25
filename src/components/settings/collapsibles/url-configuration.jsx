@@ -9,40 +9,35 @@ import Tooltip from '@commercetools-uikit/tooltip';
 const UrlConfiguration = ({ formik }) => {
   return (
     <CollapsiblePanel header="Url Configuration" id="urlConfigurationPanel">
-      <Spacings.Stack scale="s">
-        <div id="urlConfigurationInputs">
-          <Spacings.Stack scale="xs">
-            <Spacings.Inline>
-              <TextField
-                name="backendURL"
-                title="Connector Endpoint:"
-                value={formik?.values?.backendURL || ''}
-                errors={formik.errors.backendURL}
-                touched={formik.touched.backendURL}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                renderError={(errorKey) => {
-                  switch (errorKey) {
-                    case 'notvalid':
-                      return 'The value should be a valid https url.';
-                    default:
-                      return null;
-                  }
-                }}
-                isRequired
-              />
-              <Tooltip
-                placement="right"
-                title="Insert the connector endpoint e.g. https://connector.com"
-              >
-                <IconButton
-                  icon={<InformationIcon />}
-                  onClick={() => { }}
-                />
-              </Tooltip>
-
-            </Spacings.Inline>
-            <Spacings.Inline>
+      <div id="urlConfigurationInputs">
+        <Spacings.Stack scale="xl">
+          <Spacings.Inline alignItems="center">
+            <TextField
+              name="backendURL"
+              title="Connector Endpoint:"
+              value={formik?.values?.backendURL || ''}
+              errors={formik.errors.backendURL}
+              touched={formik.touched.backendURL}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              renderError={(errorKey) => {
+                switch (errorKey) {
+                  case 'notvalid':
+                    return 'The value should be a valid https url.';
+                  default:
+                    return null;
+                }
+              }}
+              isRequired
+            />
+            <Tooltip
+              placement="right"
+              title="Insert the connector endpoint e.g. https://connector.com"
+            >
+              <IconButton icon={<InformationIcon />} onClick={() => {}} />
+            </Tooltip>
+          </Spacings.Inline>
+          <Spacings.Inline alignItems="center">
             <TextField
               name="miraklOperatorKey"
               title="Mirakl Operator Key:"
@@ -53,18 +48,11 @@ const UrlConfiguration = ({ formik }) => {
               onBlur={formik.handleBlur}
               isRequired
             />
-            <Tooltip
-                placement="right"
-                title="Insert the operator key"
-              >
-                <IconButton
-                  icon={<InformationIcon />}
-                  onClick={() => { }}
-                />
-              </Tooltip>
-
-            </Spacings.Inline>
-            <Spacings.Inline>
+            <Tooltip placement="right" title="Insert the operator key">
+              <IconButton icon={<InformationIcon />} onClick={() => {}} />
+            </Tooltip>
+          </Spacings.Inline>
+          <Spacings.Inline alignItems="center">
             <TextField
               name="miraklUrl"
               title="Mirakl URL:"
@@ -84,19 +72,14 @@ const UrlConfiguration = ({ formik }) => {
               isRequired
             />
             <Tooltip
-                placement="right"
-                title="Insert the mirakl url e.g. https://yourorg.mirakl.net/"
-              >
-                <IconButton
-                  icon={<InformationIcon />}
-                  onClick={() => { }}
-                />
-              </Tooltip>
-
-            </Spacings.Inline>
-          </Spacings.Stack>
-        </div>
-      </Spacings.Stack>
+              placement="right"
+              title="Insert the mirakl url e.g. https://yourorg.mirakl.net/"
+            >
+              <IconButton icon={<InformationIcon />} onClick={() => {}} />
+            </Tooltip>
+          </Spacings.Inline>
+        </Spacings.Stack>
+      </div>
     </CollapsiblePanel>
   );
 };
