@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import './settings.css';
 import UrlConfiguration from './collapsibles/url-configuration';
@@ -9,9 +9,9 @@ import { useIntl } from 'react-intl';
 import { BackIcon } from '@commercetools-uikit/icons';
 import Text from '@commercetools-uikit/text';
 import Label from '@commercetools-uikit/label';
+import Tooltip from '@commercetools-uikit/tooltip';
 import ToggleInput from '@commercetools-uikit/toggle-input';
-import Constraints from '@commercetools-uikit/constraints';
-import { ContentNotification } from '@commercetools-uikit/notifications';
+import LoadingSpinner from '@commercetools-uikit/loading-spinner';
 import { Link as RouterLink } from 'react-router-dom';
 import messages from './messages';
 import FlatButton from '@commercetools-uikit/flat-button';
@@ -28,14 +28,16 @@ import {
   useShowNotification,
   // useShowApiErrorNotification,
 } from '@commercetools-frontend/actions-global';
-import { DOMAINS, NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
+import { DOMAINS } from '@commercetools-frontend/constants';
 
 import jobConfigData from '../../data/jobConfigData.json';
 
 const Settings = (props) => {
   const { syncTypes } = jobConfigData;
   const intl = useIntl();
-  const { baseurl, error, loading } = useGetSettingsCTP();
+  const { baseurl, error } = useGetSettingsCTP();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isFormChanged, setIsFormChanged] = useState(false);
   const GetSettingsData = useGetSettingsData();
   const SaveSettings = useSettings();
   const SaveSettingsToDashboard = useSettingsToDashboard();
@@ -63,10 +65,9 @@ const Settings = (props) => {
   const formik = useFormik({
     initialValues,
     validate,
-    onSubmit: async (formikValues, formikHelpers) => {
+    onSubmit: async (formikValues) => {
       try {
         if (formikValues.connectorEnabled && formikValues.backendURL) {
-          console.log('backedn-----' + formikValues.backendURL);
           await SaveSettings.execute({ url: formikValues.backendURL });
         }
         await SaveSettingsToDashboard.execute(formikValues);
@@ -75,6 +76,7 @@ const Settings = (props) => {
           domain: DOMAINS.PAGE,
           text: intl.formatMessage(messages.settingsUpdated, {}),
         });
+        setIsFormChanged(false);
       } catch (err) {
         showNotification({
           kind: 'error',
@@ -96,6 +98,8 @@ const Settings = (props) => {
             ...initialValues,
             ...result.data,
           });
+
+          setIsLoading(false);
         })
         .catch((err) => {
           showNotification({
@@ -107,10 +111,6 @@ const Settings = (props) => {
     }
   }, [GetSettingsData, baseurl, formik, initialValues, showNotification]);
 
-  if (loading) {
-    return 'Loading...';
-  }
-
   if (error) {
     showNotification({
       kind: 'error',
@@ -118,6 +118,11 @@ const Settings = (props) => {
       text: JSON.stringify(error),
     });
   }
+
+  const onChangeHandler = (event) => {
+    setIsFormChanged(true);
+    formik.handleChange(event);
+  };
 
   return (
     <div id="settingsPage">
@@ -132,52 +137,68 @@ const Settings = (props) => {
           <Text.Headline as="h2" intlMessage={messages.title} />
         </Spacings.Stack>
 
-        <form onSubmit={formik.handleSubmit}>
-          <Spacings.Stack scale="m">
-            <Spacings.Inline alignItems="center">
-              <Label htmlFor="connectorEnabled" isBold>
-                Enable Markeplace Connector:
-              </Label>
-              <ToggleInput
-                id="connectorEnabled"
-                name="connectorEnabled"
-                onChange={formik.handleChange}
-                isChecked={formik.values.connectorEnabled}
-                value="connectorEnabled"
-                size="small"
-              />
-            </Spacings.Inline>
-
-            <div className="top-bar">
-              <Spacings.Inline justifyContent="flex-end">
-                <PrimaryButton
-                  id="refreshCache"
-                  type="submit"
-                  style={{ width: 'fit-content' }}
-                  label="Refresh Cache"
-                  onClick={refreshCacheHandler}
-                  isDisabled={formik.isSubmitting}
-                />
-                <PrimaryButton
-                  id="saveButton"
-                  type="submit"
-                  style={{ width: 'fit-content' }}
-                  label="Save"
-                  onClick={formik.handleSubmit}
-                  isDisabled={formik.isSubmitting}
+        {isLoading ? (
+          <LoadingSpinner size="s">Loading</LoadingSpinner>
+        ) : (
+          <form onSubmit={formik.handleSubmit}>
+            <Spacings.Stack scale="m">
+              <Spacings.Inline alignItems="center">
+                <Label htmlFor="connectorEnabled" isBold>
+                  Enable Markeplace Connector:
+                </Label>
+                <ToggleInput
+                  id="connectorEnabled"
+                  name="connectorEnabled"
+                  onChange={onChangeHandler}
+                  isChecked={formik.values.connectorEnabled}
+                  value="connectorEnabled"
+                  size="small"
                 />
               </Spacings.Inline>
-            </div>
 
-            {formik.values.connectorEnabled && (
-              <Spacings.Stack scale="m">
-                <UrlConfiguration formik={formik} />
-                <JobConfiguration formik={formik} />
-                <CommerceToolsConfigutation formik={formik} />
-              </Spacings.Stack>
-            )}
-          </Spacings.Stack>
-        </form>
+              <div className="top-bar">
+                <Spacings.Inline justifyContent="flex-end">
+                  <Tooltip placement="left" title="Refresh Connector Cache.">
+                    <PrimaryButton
+                      id="refreshCache"
+                      type="submit"
+                      style={{ width: 'fit-content' }}
+                      label="Refresh Cache"
+                      onClick={refreshCacheHandler}
+                      isDisabled={formik.isSubmitting}
+                    />
+                  </Tooltip>
+
+                  <PrimaryButton
+                    id="saveButton"
+                    type="submit"
+                    style={{ width: 'fit-content' }}
+                    label="Save"
+                    onClick={formik.handleSubmit}
+                    isDisabled={formik.isSubmitting || !isFormChanged}
+                  />
+                </Spacings.Inline>
+              </div>
+
+              {formik.values.connectorEnabled && (
+                <Spacings.Stack scale="m">
+                  <UrlConfiguration
+                    formik={formik}
+                    setIsFormChanged={setIsFormChanged}
+                  />
+                  <JobConfiguration
+                    formik={formik}
+                    setIsFormChanged={setIsFormChanged}
+                  />
+                  <CommerceToolsConfigutation
+                    formik={formik}
+                    setIsFormChanged={setIsFormChanged}
+                  />
+                </Spacings.Stack>
+              )}
+            </Spacings.Stack>
+          </form>
+        )}
       </Spacings.Stack>
     </div>
   );

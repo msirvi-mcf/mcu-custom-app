@@ -11,9 +11,15 @@ import IconButton from '@commercetools-uikit/icon-button';
 import Tooltip from '@commercetools-uikit/tooltip';
 import { InformationIcon } from '@commercetools-uikit/icons';
 
-const JobConfiguration = ({ formik }) => {
+const JobConfiguration = ({ formik, setIsFormChanged }) => {
   const { syncTypes } = jobConfigData;
   const intl = useIntl();
+
+  const onChangeHandler = (event) => {
+    setIsFormChanged(true);
+    formik.handleChange(event);
+  };
+
   return (
     <CollapsiblePanel
       header="Job Configuration"
@@ -39,7 +45,7 @@ const JobConfiguration = ({ formik }) => {
                   <ToggleInput
                     id={data.id}
                     name={data.id}
-                    onChange={formik.handleChange}
+                    onChange={onChangeHandler}
                     isChecked={formik.values[data.id]}
                     value={data.id}
                     size="small"
@@ -52,7 +58,7 @@ const JobConfiguration = ({ formik }) => {
                         title="Mode:"
                         name={data.modeId}
                         value={formik?.values[data.modeId] || ''}
-                        onChange={formik.handleChange}
+                        onChange={onChangeHandler}
                         horizontalConstraint={4}
                         options={data.modes}
                       />
@@ -67,7 +73,7 @@ const JobConfiguration = ({ formik }) => {
                               }
                               errors={formik.errors[data.modeId + 'Schedule']}
                               touched={formik.touched[data.modeId + 'Schedule']}
-                              onChange={formik.handleChange}
+                              onChange={onChangeHandler}
                               onBlur={formik.handleBlur}
                               renderError={(errorKey) => {
                                 switch (errorKey) {
@@ -105,6 +111,7 @@ const JobConfiguration = ({ formik }) => {
 
 JobConfiguration.propTypes = {
   formik: PropTypes.object,
+  setIsFormChanged: PropTypes.func,
 };
 
 export default JobConfiguration;

@@ -8,7 +8,7 @@ import Tooltip from '@commercetools-uikit/tooltip';
 import ReactHtmlParser from 'react-html-parser';
 import { InformationIcon } from '@commercetools-uikit/icons';
 
-const CommerceToolsConfigutation = ({ formik }) => {
+const CommerceToolsConfigutation = ({ formik, setIsFormChanged }) => {
   const [fileUploaded, setFileUploaded] = useState('');
   const fileUploadHandler = (event) => {
     try {
@@ -16,11 +16,13 @@ const CommerceToolsConfigutation = ({ formik }) => {
       let file = event.currentTarget.files[0];
       reader.onloadend = () => {
         const fileContent = reader.result;
+        setIsFormChanged(true);
         formik.setFieldValue('ctConfigFile', fileContent);
         setFileUploaded(file.name);
       };
       reader.readAsText(file, 'UTF-8');
     } catch (err) {
+      setIsFormChanged(true);
       formik.setFieldValue('ctConfigFile', null);
       setFileUploaded('');
     }
@@ -31,7 +33,7 @@ const CommerceToolsConfigutation = ({ formik }) => {
   return (
     <CollapsiblePanel
       headerControls={
-        <Tooltip placement="right" title="Upload .env format config file only">
+        <Tooltip placement="right" title="Upload .env format config file only.">
           <IconButton
             icon={<InformationIcon />}
             label="Upload .env format config file only"
@@ -66,6 +68,7 @@ const CommerceToolsConfigutation = ({ formik }) => {
 
 CommerceToolsConfigutation.propTypes = {
   formik: PropTypes.object,
+  setIsFormChanged: PropTypes.func,
 };
 
 export default CommerceToolsConfigutation;

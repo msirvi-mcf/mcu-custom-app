@@ -57,6 +57,9 @@ export const useSettingsToDashboard = () => {
           headers: { 'ngrok-skip-browser-warning': '69420' },
         })
       );
+    } else {
+      // CALL ENDPOINT THAT DISABLES THE CONNECTOR
+      console.log(formData);
     }
   }
 

@@ -15,7 +15,11 @@ const validate = (values) => {
     errors.miraklUrl = { missing: true };
   }
   jobConfigData.syncTypes.forEach((data) => {
+    if (values[data.modeId] === 'job' && !values[data.modeId + 'Schedule']) {
+      errors[data.modeId + 'Schedule'] = { missing: true };
+    }
     if (
+      values[data.modeId] === 'job' &&
       values[data.modeId + 'Schedule'] &&
       !isValidCron(values[data.modeId + 'Schedule'])
     ) {
