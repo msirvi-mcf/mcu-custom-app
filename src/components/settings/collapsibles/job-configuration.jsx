@@ -21,7 +21,7 @@ const JobConfiguration = ({ formik }) => {
       id="jobConfigurationPanel"
     >
       <Spacings.Inline scale="xxl" alignItems="baseline">
-        <Spacings.Stack scale="m">
+        <Spacings.Stack scale="l">
           {syncTypes.map((data, index) => {
             return (
               <Spacings.Inline key={index} alignItems="center" scale="xl">
@@ -85,7 +85,7 @@ const JobConfiguration = ({ formik }) => {
                             >
                               <IconButton
                                 icon={<InformationIcon />}
-                                onClick={() => {}}
+                                label="Insert a valid cron syntax."
                               />
                             </Tooltip>
                           </Spacings.Inline>

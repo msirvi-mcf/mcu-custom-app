@@ -28,7 +28,10 @@ const CommerceToolsConfigutation = ({ formik }) => {
     <CollapsiblePanel
       headerControls={
         <Tooltip placement="right" title="Upload .env format config file only">
-          <IconButton icon={<InformationIcon />} onClick={() => {}} />
+          <IconButton
+            icon={<InformationIcon />}
+            label="Upload .env format config file only"
+          />
         </Tooltip>
       }
       header="Commercetools Configuration"

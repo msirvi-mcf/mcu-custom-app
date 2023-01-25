@@ -1,5 +1,28 @@
+div[data-test="top-navigation"] {
+  box-shadow: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.24);
+}
+
+#settingsPage {
+  margin-top: 50px !important;
+}
+
 label[for="connectorEnabled"]:last-child:focus-within {
   outline: none;
+}
+
+.top-bar {
+  padding: 12px 10px;
+  position: fixed;
+  z-index: 99;
+  left: 0;
+  width: 100%;
+  right: 0%;
+  background: #fff;
+  min-height: 56px;
+  margin-top: 0 !important;
+  top: 43px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
 #urlConfigurationPanel + div #urlConfigurationInputs > div > span {
@@ -109,4 +132,26 @@ label[for="connectorEnabled"]:last-child:focus-within {
 #ctConfigurationPanel + div label:active {
   background: var(--background-color-for-button-as-primary-when-active, #00b39e);
   box-shadow: inset 0 -1px 3px 0 rgba(0, 0, 0, 0.1), inset 0 1px 1.5px 0 rgba(0, 0, 0, 0.2), inset 0 1px 1.5px 0 rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 900px) {
+  #jobConfigurationPanel + div #modeSelect > span  {
+    flex-direction: column;
+    align-items: baseline;
+    row-gap: 10px;
+  }
+
+  #jobConfigurationPanel + div #scheduleSelect {
+    margin-left: 0 !important;
+  }
+}
+
+@media (max-width: 714px) {
+  #urlConfigurationPanel + div #urlConfigurationInputs > div > span > div:first-child > div  {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #jobConfigurationPanel + div #scheduleSelect > span > div:first-child > div {
+    grid-template-columns: 1fr 1fr;
+  }
 }

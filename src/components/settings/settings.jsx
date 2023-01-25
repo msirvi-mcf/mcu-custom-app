@@ -94,64 +94,66 @@ const Settings = (props) => {
   });
 
   return (
-    <Spacings.Stack scale="m">
-      <Spacings.Stack scale="xs">
-        <FlatButton
-          as={RouterLink}
-          to={props.linkToWelcome}
-          label={intl.formatMessage(messages.backToWelcome)}
-          icon={<BackIcon />}
-        />
-        <Text.Headline as="h2" intlMessage={messages.title} />
-      </Spacings.Stack>
+    <div id="settingsPage">
+      <Spacings.Stack scale="m">
+        <Spacings.Stack scale="xs">
+          <FlatButton
+            as={RouterLink}
+            to={props.linkToWelcome}
+            label={intl.formatMessage(messages.backToWelcome)}
+            icon={<BackIcon />}
+          />
+          <Text.Headline as="h2" intlMessage={messages.title} />
+        </Spacings.Stack>
 
-      <form onSubmit={formik.handleSubmit}>
-        <Spacings.Stack scale="xl">
-          <Spacings.Inline alignItems="center">
-            <Label htmlFor="connectorEnabled" isBold>
-              Enable Markeplace Connector:
-            </Label>
-            <ToggleInput
-              id="connectorEnabled"
-              name="connectorEnabled"
-              onChange={formik.handleChange}
-              isChecked={formik.values.connectorEnabled}
-              value="connectorEnabled"
-              size="small"
-            />
-          </Spacings.Inline>
-
-          <div className="top-bar">
-            <Spacings.Inline justifyContent="flex-end">
-              <PrimaryButton
-                id="refreshCache"
-                type="submit"
-                style={{ width: 'fit-content' }}
-                label="Refresh Cache"
-                onClick={refreshCacheHandler}
-                isDisabled={formik.isSubmitting}
-              />
-              <PrimaryButton
-                id="saveButton"
-                type="submit"
-                style={{ width: 'fit-content' }}
-                label="Save"
-                onClick={formik.handleSubmit}
-                isDisabled={formik.isSubmitting}
+        <form onSubmit={formik.handleSubmit}>
+          <Spacings.Stack scale="m">
+            <Spacings.Inline alignItems="center">
+              <Label htmlFor="connectorEnabled" isBold>
+                Enable Markeplace Connector:
+              </Label>
+              <ToggleInput
+                id="connectorEnabled"
+                name="connectorEnabled"
+                onChange={formik.handleChange}
+                isChecked={formik.values.connectorEnabled}
+                value="connectorEnabled"
+                size="small"
               />
             </Spacings.Inline>
-          </div>
 
-          {formik.values.connectorEnabled && (
-            <Spacings.Stack scale="m">
-              <UrlConfiguration formik={formik} />
-              <JobConfiguration formik={formik} />
-              <CommerceToolsConfigutation formik={formik} />
-            </Spacings.Stack>
-          )}
-        </Spacings.Stack>
-      </form>
-    </Spacings.Stack>
+            <div className="top-bar">
+              <Spacings.Inline justifyContent="flex-end">
+                <PrimaryButton
+                  id="refreshCache"
+                  type="submit"
+                  style={{ width: 'fit-content' }}
+                  label="Refresh Cache"
+                  onClick={refreshCacheHandler}
+                  isDisabled={formik.isSubmitting}
+                />
+                <PrimaryButton
+                  id="saveButton"
+                  type="submit"
+                  style={{ width: 'fit-content' }}
+                  label="Save"
+                  onClick={formik.handleSubmit}
+                  isDisabled={formik.isSubmitting}
+                />
+              </Spacings.Inline>
+            </div>
+
+            {formik.values.connectorEnabled && (
+              <Spacings.Stack scale="m">
+                <UrlConfiguration formik={formik} />
+                <JobConfiguration formik={formik} />
+                <CommerceToolsConfigutation formik={formik} />
+              </Spacings.Stack>
+            )}
+          </Spacings.Stack>
+        </form>
+      </Spacings.Stack>
+    </div>
   );
 };
 Settings.displayName = 'Settings';

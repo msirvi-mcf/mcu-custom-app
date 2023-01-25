@@ -34,7 +34,10 @@ const UrlConfiguration = ({ formik }) => {
               placement="right"
               title="Insert the connector endpoint e.g. https://connector.com"
             >
-              <IconButton icon={<InformationIcon />} onClick={() => {}} />
+              <IconButton
+                icon={<InformationIcon />}
+                label="Insert the connector endpoint e.g. https://connector.com"
+              />
             </Tooltip>
           </Spacings.Inline>
           <Spacings.Inline alignItems="center">
@@ -49,7 +52,10 @@ const UrlConfiguration = ({ formik }) => {
               isRequired
             />
             <Tooltip placement="right" title="Insert the operator key">
-              <IconButton icon={<InformationIcon />} onClick={() => {}} />
+              <IconButton
+                icon={<InformationIcon />}
+                label="Insert the operator key"
+              />
             </Tooltip>
           </Spacings.Inline>
           <Spacings.Inline alignItems="center">
@@ -75,7 +81,10 @@ const UrlConfiguration = ({ formik }) => {
               placement="right"
               title="Insert the mirakl url e.g. https://yourorg.mirakl.net/"
             >
-              <IconButton icon={<InformationIcon />} onClick={() => {}} />
+              <IconButton
+                icon={<InformationIcon />}
+                label="Insert the mirakl url e.g. https://yourorg.mirakl.net/"
+              />
             </Tooltip>
           </Spacings.Inline>
         </Spacings.Stack>
