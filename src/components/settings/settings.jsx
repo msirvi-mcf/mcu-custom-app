@@ -17,7 +17,7 @@ import FlatButton from '@commercetools-uikit/flat-button';
 import { useFormik } from 'formik';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import validate from './validate';
-import { useSettings, useSettingsToDashboard } from '../../hooks/use-settings';
+import { useSettings, useSettingsToDashboard, useGetSettingsCTP, useGetSettingsData } from '../../hooks/use-settings';
 import {
   useShowNotification,
   // useShowApiErrorNotification,
@@ -30,18 +30,26 @@ const Settings = (props) => {
   const { syncTypes } = jobConfigData;
 
   const intl = useIntl();
+  const {baseurl,error,loading} = useGetSettingsCTP();
+  const GetSettingsData = useGetSettingsData();
   const SaveSettings = useSettings();
   const SaveSettingsToDashboard = useSettingsToDashboard();
   const showNotification = useShowNotification();
+  
+    // if(baseurl){
+    //   GetSettingsData.execute(baseurl).then(result => {
+    //      console.log(result?.data);
+    //   }).catch((err)=> {
+    //     console.log(err);
+    //   });
+      
+    // }
 
-  const initialValues = {
+  let initialValues = {
     connectorEnabled: false,
     backendURL: '',
-    miraklApiKey: '',
-    miraklAPISecret: '',
-    urlIsProduction: false,
-    miraklClientKey: '',
-    mode: '',
+    miraklOperatorKey: '',
+    miraklUrl: '',
     ctConfigFile: null,
   };
 
@@ -56,6 +64,7 @@ const Settings = (props) => {
       console.log(formikValues);
       try {
         if (formikValues.connectorEnabled && formikValues.backendURL) {
+          console.log("backedn-----"+formikValues.backendURL);
           await SaveSettings.execute({ url: formikValues.backendURL });
         }
         await SaveSettingsToDashboard.execute(formikValues);
