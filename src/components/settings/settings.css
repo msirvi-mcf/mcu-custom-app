@@ -137,6 +137,10 @@ label[for="connectorEnabled"]:last-child:focus-within {
   box-shadow: inset 0 -1px 3px 0 rgba(0, 0, 0, 0.1), inset 0 1px 1.5px 0 rgba(0, 0, 0, 0.2), inset 0 1px 1.5px 0 rgba(0, 0, 0, 0.25);
 }
 
+.config-file-display {
+  margin-bottom: 20px;
+}
+
 @media (max-width: 920px) {
   .top-bar {
     width: calc(100% - 64px);

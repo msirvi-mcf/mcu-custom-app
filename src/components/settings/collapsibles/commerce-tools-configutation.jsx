@@ -5,6 +5,7 @@ import Spacings from '@commercetools-uikit/spacings';
 import { useState } from 'react';
 import IconButton from '@commercetools-uikit/icon-button';
 import Tooltip from '@commercetools-uikit/tooltip';
+import ReactHtmlParser from 'react-html-parser';
 import { InformationIcon } from '@commercetools-uikit/icons';
 
 const CommerceToolsConfigutation = ({ formik }) => {
@@ -24,6 +25,9 @@ const CommerceToolsConfigutation = ({ formik }) => {
       setFileUploaded('');
     }
   };
+
+  const configFile = formik.values.ctConfigFile.replaceAll('\n', '<br/>');
+
   return (
     <CollapsiblePanel
       headerControls={
@@ -39,6 +43,12 @@ const CommerceToolsConfigutation = ({ formik }) => {
       id="ctConfigurationPanel"
     >
       <Spacings.Stack>
+        {formik.values.ctConfigFile && (
+          <div className="config-file-display">
+            <h4>Current Configuration File</h4>
+            <div>{ReactHtmlParser(configFile)}</div>
+          </div>
+        )}
         <Spacings.Inline alignItems="center">
           <Label htmlFor="uploadFile">Upload Configuration File</Label>
           <input
