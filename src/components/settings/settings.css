@@ -15,9 +15,8 @@ label[for="connectorEnabled"]:last-child:focus-within {
   padding: 12px 10px;
   position: fixed;
   z-index: 99;
-  left: 0;
-  width: 100%;
-  right: 0%;
+  width: calc(100% - 245px);
+  right: 19px;
   background: #fff;
   min-height: 56px;
   margin-top: 0 !important;
@@ -89,6 +88,10 @@ label[for="connectorEnabled"]:last-child:focus-within {
   margin-top: 0 !important;
 }
 
+#jobConfigurationPanel + div > div {
+  padding-bottom: 30px !important;
+}
+
 #uploadFile {
 	width: 0.1px;
 	height: 0.1px;
@@ -134,7 +137,14 @@ label[for="connectorEnabled"]:last-child:focus-within {
   box-shadow: inset 0 -1px 3px 0 rgba(0, 0, 0, 0.1), inset 0 1px 1.5px 0 rgba(0, 0, 0, 0.2), inset 0 1px 1.5px 0 rgba(0, 0, 0, 0.25);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 920px) {
+  .top-bar {
+    width: calc(100% - 64px);
+  }
+  #jobConfigurationPanel + div #modeSelect > span > div > div {
+    grid-template-columns: 50px 180px;
+  }
+
   #jobConfigurationPanel + div #modeSelect > span  {
     flex-direction: column;
     align-items: baseline;
@@ -147,6 +157,10 @@ label[for="connectorEnabled"]:last-child:focus-within {
 }
 
 @media (max-width: 714px) {
+  #jobConfigurationPanel + div div[aria-labelledby="jobConfigurationPanel"] > span > div > span > span > label:first-child {
+    min-width: auto;
+  }
+
   #urlConfigurationPanel + div #urlConfigurationInputs > div > span > div:first-child > div  {
     grid-template-columns: 1fr 1fr;
   }
@@ -154,4 +168,10 @@ label[for="connectorEnabled"]:last-child:focus-within {
   #jobConfigurationPanel + div #scheduleSelect > span > div:first-child > div {
     grid-template-columns: 1fr 1fr;
   }
+
+  #jobConfigurationPanel + div #modeSelect > span > div > div {
+    grid-template-columns: 1fr 1fr;
+    width: auto;
+  }
 }
+

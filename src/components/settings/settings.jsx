@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import './settings.css';
 import UrlConfiguration from './collapsibles/url-configuration';
@@ -33,7 +34,6 @@ import jobConfigData from '../../data/jobConfigData.json';
 
 const Settings = (props) => {
   const { syncTypes } = jobConfigData;
-
   const intl = useIntl();
   const { baseurl, error, loading } = useGetSettingsCTP();
   const GetSettingsData = useGetSettingsData();
@@ -41,26 +41,20 @@ const Settings = (props) => {
   const SaveSettingsToDashboard = useSettingsToDashboard();
   const showNotification = useShowNotification();
 
-  // if(baseurl){
-  //   GetSettingsData.execute(baseurl).then(result => {
-  //      console.log(result?.data);
-  //   }).catch((err)=> {
-  //     console.log(err);
-  //   });
-
-  // }
-
-  const refreshCacheHandler = () => {
+  const refreshCacheHandler = (event) => {
+    event.preventDefault();
     alert('Cache Refreshed!');
   };
 
-  const initialValues = {
-    connectorEnabled: false,
-    backendURL: '',
-    miraklOperatorKey: '',
-    miraklUrl: '',
-    ctConfigFile: null,
-  };
+  const initialValues = useMemo(() => {
+    return {
+      connectorEnabled: false,
+      backendURL: '',
+      miraklOperatorKey: '',
+      miraklUrl: '',
+      ctConfigFile: null,
+    };
+  }, []);
 
   syncTypes.forEach((type) => {
     initialValues[type.id] = false;
@@ -70,7 +64,6 @@ const Settings = (props) => {
     initialValues,
     validate,
     onSubmit: async (formikValues, formikHelpers) => {
-      console.log(formikValues);
       try {
         if (formikValues.connectorEnabled && formikValues.backendURL) {
           console.log('backedn-----' + formikValues.backendURL);
@@ -83,7 +76,6 @@ const Settings = (props) => {
           text: intl.formatMessage(messages.settingsUpdated, {}),
         });
       } catch (err) {
-        console.error(err);
         showNotification({
           kind: 'error',
           domain: DOMAINS.PAGE,
@@ -92,6 +84,40 @@ const Settings = (props) => {
       }
     },
   });
+
+  useEffect(() => {
+    if (
+      typeof baseurl !== 'undefined' &&
+      formik.values.backendURL !== baseurl
+    ) {
+      GetSettingsData.execute(baseurl)
+        .then((result) => {
+          formik.setValues({
+            ...initialValues,
+            ...result.data,
+          });
+        })
+        .catch((err) => {
+          showNotification({
+            kind: 'error',
+            domain: DOMAINS.PAGE,
+            text: JSON.stringify(err.body.error),
+          });
+        });
+    }
+  }, [GetSettingsData, baseurl, formik, initialValues, showNotification]);
+
+  if (loading) {
+    return 'Loading...';
+  }
+
+  if (error) {
+    showNotification({
+      kind: 'error',
+      domain: DOMAINS.PAGE,
+      text: JSON.stringify(error),
+    });
+  }
 
   return (
     <div id="settingsPage">

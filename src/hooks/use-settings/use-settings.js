@@ -50,15 +50,13 @@ export const useSettingsToDashboard = () => {
           headers: { 'ngrok-skip-browser-warning': '69420' },
         })
       );
-      const result = await dispatch(
+      await dispatch(
         actions.forwardTo.post({
           uri: url,
           payload: formData,
           headers: { 'ngrok-skip-browser-warning': '69420' },
         })
       );
-      // Update state with `result`
-      console.log('result:---' + result);
     }
   }
 
@@ -91,16 +89,15 @@ export const useGetSettingsData = () => {
   async function execute(baseurl) {
     const settingUrl = '/settings/';
     const url = baseurl + settingUrl;
-    console.log(url);
-      return await dispatch(
-        actions.forwardTo.get({
-          uri: url,
-          headers: { 'ngrok-skip-browser-warning': '69420' },
-        })
-      );
+    return await dispatch(
+      actions.forwardTo.get({
+        uri: url,
+        headers: { 'ngrok-skip-browser-warning': '69420' },
+      })
+    );
   }
 
   return {
-    execute
+    execute,
   };
 };
