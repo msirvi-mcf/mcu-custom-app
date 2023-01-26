@@ -50,6 +50,12 @@ const Settings = (props) => {
     alert('Cache Refreshed!');
   };
 
+  const scrollToTop = () => {
+    document
+      .querySelector('#notifications-page')
+      .scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+  };
+
   const initialValues = useMemo(() => {
     return {
       connectorEnabled: false,
@@ -73,6 +79,7 @@ const Settings = (props) => {
           await SaveSettings.execute({ url: formikValues.backendURL });
         }
         await SaveSettingsToDashboard.execute(formikValues);
+        scrollToTop();
         const notification = showNotification({
           kind: 'success',
           domain: DOMAINS.PAGE,
@@ -85,6 +92,7 @@ const Settings = (props) => {
 
         setIsFormChanged(false);
       } catch (err) {
+        scrollToTop();
         const notification = showNotification({
           kind: 'error',
           domain: DOMAINS.PAGE,
@@ -114,8 +122,9 @@ const Settings = (props) => {
           setIsLoading(false);
           setContentLoaded(true);
         })
-        .catch((err) => {
+        .catch(() => {
           if (showError) {
+            scrollToTop();
             const notification = showNotification({
               kind: 'error',
               domain: DOMAINS.PAGE,
