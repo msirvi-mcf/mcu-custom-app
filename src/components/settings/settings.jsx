@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import './settings.css';
 import UrlConfiguration from './collapsibles/url-configuration';
@@ -24,6 +25,7 @@ import {
   useGetSettingsCTP,
   useGetSettingsData,
 } from '../../hooks/use-settings';
+import { removeNotification } from '@commercetools-frontend/notifications';
 import { useShowNotification } from '@commercetools-frontend/actions-global';
 import { DOMAINS } from '@commercetools-frontend/constants';
 
@@ -32,7 +34,10 @@ import jobConfigData from '../../data/jobConfigData.json';
 const Settings = (props) => {
   const { syncTypes } = jobConfigData;
   const intl = useIntl();
+  const dispatch = useDispatch();
   const { baseurl, error } = useGetSettingsCTP();
+  const [showError, setShowError] = useState(true);
+  const [contentLoaded, setContentLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isFormChanged, setIsFormChanged] = useState(false);
   const GetSettingsData = useGetSettingsData();
@@ -51,7 +56,7 @@ const Settings = (props) => {
       backendURL: '',
       miraklOperatorKey: '',
       miraklUrl: '',
-      ctConfigFile: null,
+      ctConfigFile: '',
     };
   }, []);
 
@@ -68,18 +73,27 @@ const Settings = (props) => {
           await SaveSettings.execute({ url: formikValues.backendURL });
         }
         await SaveSettingsToDashboard.execute(formikValues);
-        showNotification({
+        const notification = showNotification({
           kind: 'success',
           domain: DOMAINS.PAGE,
           text: intl.formatMessage(messages.settingsUpdated, {}),
         });
+
+        setTimeout(() => {
+          dispatch(removeNotification(notification.payload.id));
+        }, 3000);
+
         setIsFormChanged(false);
       } catch (err) {
-        showNotification({
+        const notification = showNotification({
           kind: 'error',
           domain: DOMAINS.PAGE,
-          text: JSON.stringify(err.body.error),
+          text: JSON.stringify(err?.body?.error || 'Error'),
         });
+
+        setTimeout(() => {
+          dispatch(removeNotification(notification.payload.id));
+        }, 3000);
       }
     },
   });
@@ -87,7 +101,8 @@ const Settings = (props) => {
   useEffect(() => {
     if (
       typeof baseurl !== 'undefined' &&
-      formik.values.backendURL !== baseurl
+      formik.values.backendURL !== baseurl &&
+      !contentLoaded
     ) {
       GetSettingsData.execute(baseurl)
         .then((result) => {
@@ -97,17 +112,36 @@ const Settings = (props) => {
           });
 
           setIsLoading(false);
+          setContentLoaded(true);
         })
         .catch((err) => {
-          showNotification({
-            kind: 'error',
-            domain: DOMAINS.PAGE,
-            text: JSON.stringify(err?.body?.error || err?.message || 'Error'),
-          });
+          if (showError) {
+            const notification = showNotification({
+              kind: 'error',
+              domain: DOMAINS.PAGE,
+              text: 'Failed to fetch data.',
+            });
+
+            setTimeout(() => {
+              dispatch(removeNotification(notification.payload.id));
+            }, 2000);
+
+            setShowError(false);
+          }
+
           setIsLoading(false);
         });
     }
-  }, [GetSettingsData, baseurl, formik, initialValues, showNotification]);
+  }, [
+    GetSettingsData,
+    baseurl,
+    formik,
+    initialValues,
+    showNotification,
+    dispatch,
+    showError,
+    contentLoaded,
+  ]);
 
   if (error) {
     showNotification({
