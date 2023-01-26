@@ -4,7 +4,6 @@ import {
 } from '@commercetools-frontend/application-shell';
 import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
 import { actions, useAsyncDispatch } from '@commercetools-frontend/sdk';
-import { useEffect, useState } from 'react';
 import { extractErrorFromGraphQlResponse } from '../../helpers';
 import UpdateSettings from './update-settings.ctp.graphql';
 import getSettings from './get-settings.ctp.graphql';
