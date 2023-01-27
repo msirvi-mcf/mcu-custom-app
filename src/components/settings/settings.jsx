@@ -141,8 +141,6 @@ const Settings = (props) => {
 
           setIsLoading(false);
         });
-    } else {
-      setIsLoading(true);
     }
   }, [
     GetSettingsData,
