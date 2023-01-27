@@ -176,13 +176,13 @@ const Processes = (props) => {
         },
         ...visibleColumns,
     ];
-    if (error) {
-        return (
-          <ContentNotification type="error">
-            <Text.Body>Something went wrong! Make sure the backend is running</Text.Body>
-          </ContentNotification>
-        );
-      }
+    // if (error) {
+    //     return (
+    //       <ContentNotification type="error">
+    //         <Text.Body>Something went wrong! Make sure the backend is running</Text.Body>
+    //       </ContentNotification>
+    //     );
+    //   }
     return (
         <Spacings.Stack scale="xl">
             <Spacings.Stack scale="xs">

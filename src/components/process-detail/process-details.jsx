@@ -19,9 +19,9 @@ import Spacings from '@commercetools-uikit/spacings';
 //   useShowApiErrorNotification,
 // } from '@commercetools-frontend/actions-global';
 // import { PERMISSIONS } from '../../constants';
-import {
-  useProcessDetails
-} from '../../hooks/use-process-details';
+// import {
+//   useProcessDetails
+// } from '../../hooks/use-process-details';
 // import { docToFormValues, formValuesToDoc } from './conversions';
 // import ChannelsDetailsForm from './channel-details-form';
 // import { transformErrors } from './transform-errors';
@@ -30,8 +30,8 @@ import {
 
 const ProcessDetails = (props) => {
   // const intl = useIntl();
-  const params = useParams();
-  const { data, loading, error } = useProcessDetails(params.id);
+  // const params = useParams();
+  // const { data, loading, error } = useProcessDetails(params.id);
   // const { dataLocale, projectLanguages } = useApplicationContext((context) => ({
   //   dataLocale: context.dataLocale ?? '',
   //   projectLanguages: context.project?.languages ?? [],
@@ -83,13 +83,13 @@ const ProcessDetails = (props) => {
   //   ]
   // );
 
-  if (loading) return (
-    <div>Loading...</div>
-  )
+  // if (loading) return (
+  //   <div>Loading...</div>
+  // )
 
   return (
     <div>
-      {data.incident.entity}
+      {/* {data.incident.entity} */}
     </div>
   );
 };
