@@ -61,6 +61,7 @@ const JobConfiguration = ({ formik, setIsFormChanged }) => {
                         onChange={onChangeHandler}
                         horizontalConstraint={4}
                         options={data.modes}
+                        isRequired
                       />
                       {formik?.values[data.modeId] === 'job' && (
                         <div id="scheduleSelect">
@@ -87,7 +88,7 @@ const JobConfiguration = ({ formik, setIsFormChanged }) => {
                             />
                             <Tooltip
                               placement="right"
-                              title="Insert a valid cron syntax."
+                              title="Insert a valid cron syntax e.g. * * * * *"
                             >
                               <IconButton
                                 icon={<InformationIcon />}

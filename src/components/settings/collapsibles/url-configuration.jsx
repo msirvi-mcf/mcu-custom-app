@@ -73,7 +73,7 @@ const UrlConfiguration = ({ formik, setIsFormChanged }) => {
               renderError={(errorKey) => {
                 switch (errorKey) {
                   case 'notvalid':
-                    return 'The value should be a valid web url.';
+                    return 'The value should be a valid https url.';
                   default:
                     return null;
                 }

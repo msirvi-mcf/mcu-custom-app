@@ -1,6 +1,6 @@
 import { isValidCron } from 'cron-validator';
 import jobConfigData from '../../data/jobConfigData.json';
-import { isHttpsUri, isWebUri } from 'valid-url';
+import { isHttpsUri } from 'valid-url';
 
 const validate = (values) => {
   const errors = {};
@@ -15,6 +15,11 @@ const validate = (values) => {
     errors.miraklUrl = { missing: true };
   }
   jobConfigData.syncTypes.forEach((data) => {
+    if (values[data.id] && !values[data.modeId]) {
+      console.log(data.modeId+" = "+values[data.id]);
+
+      errors[data.modeId] = { missing: true };
+    }
     if (values[data.modeId] === 'job' && !values[data.modeId + 'Schedule']) {
       errors[data.modeId + 'Schedule'] = { missing: true };
     }
@@ -29,7 +34,7 @@ const validate = (values) => {
   if (values.backendURL && !isHttpsUri(values.backendURL)) {
     errors.backendURL = { notvalid: true };
   }
-  if (values.miraklUrl && !isWebUri(values.miraklUrl)) {
+  if (values.miraklUrl && !isHttpsUri(values.miraklUrl)) {
     errors.miraklUrl = { notvalid: true };
   }
 

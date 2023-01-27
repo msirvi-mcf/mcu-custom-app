@@ -33,7 +33,7 @@ const CommerceToolsConfigutation = ({ formik, setIsFormChanged }) => {
   return (
     <CollapsiblePanel
       headerControls={
-        <Tooltip placement="right" title="Upload .env format config file only.">
+        <Tooltip placement="right" title="Upload .env file, keys required in .env : CTP_PROJECT_KEY,CTP_CLIENT_SECRET,CTP_CLIENT_ID,CTP_AUTH_URL,CTP_API_URL,CTP_SCOPES">
           <IconButton
             icon={<InformationIcon />}
             label="Upload .env format config file only"

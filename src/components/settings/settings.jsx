@@ -74,11 +74,11 @@ const Settings = (props) => {
     initialValues,
     validate,
     onSubmit: async (formikValues) => {
-      try {
+      try { 
+        await SaveSettingsToDashboard.execute(formikValues);
         if (formikValues.connectorEnabled && formikValues.backendURL) {
           await SaveSettings.execute({ url: formikValues.backendURL });
         }
-        await SaveSettingsToDashboard.execute(formikValues);
         scrollToTop();
         const notification = showNotification({
           kind: 'success',
@@ -96,7 +96,7 @@ const Settings = (props) => {
         const notification = showNotification({
           kind: 'error',
           domain: DOMAINS.PAGE,
-          text: JSON.stringify(err?.body?.error || 'Error'),
+          text: JSON.stringify(err?.body?.error || 'Something went wrong'),
         });
 
         setTimeout(() => {
@@ -108,7 +108,7 @@ const Settings = (props) => {
 
   useEffect(() => {
     if (
-      typeof baseurl !== 'undefined' &&
+      typeof baseurl !== 'undefined' && baseurl &&
       formik.values.backendURL !== baseurl &&
       !contentLoaded
     ) {
@@ -140,6 +140,8 @@ const Settings = (props) => {
 
           setIsLoading(false);
         });
+    } else {
+      setIsLoading(false);
     }
   }, [
     GetSettingsData,

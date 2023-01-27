@@ -39,7 +39,6 @@ export const useSettings = () => {
 export const useSettingsToDashboard = () => {
   const dispatch = useAsyncDispatch();
   async function execute(formData) {
-    if (formData.connectorEnabled) {
       const baseUrl = formData?.backendURL;
       const settingUrl = '/settings/';
       const url = baseUrl + settingUrl;
@@ -56,10 +55,6 @@ export const useSettingsToDashboard = () => {
           headers: { 'ngrok-skip-browser-warning': '69420' },
         })
       );
-    } else {
-      // CALL ENDPOINT THAT DISABLES THE CONNECTOR
-      console.log(formData);
-    }
   }
 
   return {
@@ -79,7 +74,7 @@ export const useGetSettingsCTP = () => {
   });
 
   return {
-    baseurl: data?.customObject.value,
+    baseurl: data?.customObject?.value || '',
     error,
     loading,
   };
