@@ -6,7 +6,12 @@ import IconButton from '@commercetools-uikit/icon-button';
 import { InformationIcon } from '@commercetools-uikit/icons';
 import Tooltip from '@commercetools-uikit/tooltip';
 
-const UrlConfiguration = ({ formik }) => {
+const UrlConfiguration = ({ formik, setIsFormChanged }) => {
+  const onChangeHandler = (event) => {
+    setIsFormChanged(true);
+    formik.handleChange(event);
+  };
+
   return (
     <CollapsiblePanel header="Url Configuration" id="urlConfigurationPanel">
       <div id="urlConfigurationInputs">
@@ -18,7 +23,7 @@ const UrlConfiguration = ({ formik }) => {
               value={formik?.values?.backendURL || ''}
               errors={formik.errors.backendURL}
               touched={formik.touched.backendURL}
-              onChange={formik.handleChange}
+              onChange={onChangeHandler}
               onBlur={formik.handleBlur}
               renderError={(errorKey) => {
                 switch (errorKey) {
@@ -32,9 +37,12 @@ const UrlConfiguration = ({ formik }) => {
             />
             <Tooltip
               placement="right"
-              title="Insert the connector endpoint e.g. https://connector.com"
+              title="Insert the connector endpoint e.g. https://connector.com/."
             >
-              <IconButton icon={<InformationIcon />} onClick={() => {}} />
+              <IconButton
+                icon={<InformationIcon />}
+                label="Insert the connector endpoint e.g. https://connector.com/."
+              />
             </Tooltip>
           </Spacings.Inline>
           <Spacings.Inline alignItems="center">
@@ -44,12 +52,15 @@ const UrlConfiguration = ({ formik }) => {
               value={formik?.values?.miraklOperatorKey || ''}
               errors={formik.errors.miraklOperatorKey}
               touched={formik.touched.miraklOperatorKey}
-              onChange={formik.handleChange}
+              onChange={onChangeHandler}
               onBlur={formik.handleBlur}
               isRequired
             />
-            <Tooltip placement="right" title="Insert the operator key">
-              <IconButton icon={<InformationIcon />} onClick={() => {}} />
+            <Tooltip placement="right" title="Insert the operator key.">
+              <IconButton
+                icon={<InformationIcon />}
+                label="Insert the operator key."
+              />
             </Tooltip>
           </Spacings.Inline>
           <Spacings.Inline alignItems="center">
@@ -62,20 +73,23 @@ const UrlConfiguration = ({ formik }) => {
               renderError={(errorKey) => {
                 switch (errorKey) {
                   case 'notvalid':
-                    return 'The value should be a valid web url.';
+                    return 'The value should be a valid https url.';
                   default:
                     return null;
                 }
               }}
-              onChange={formik.handleChange}
+              onChange={onChangeHandler}
               onBlur={formik.handleBlur}
               isRequired
             />
             <Tooltip
               placement="right"
-              title="Insert the mirakl url e.g. https://yourorg.mirakl.net/"
+              title="Insert the mirakl url e.g. https://yourorg.mirakl.net/."
             >
-              <IconButton icon={<InformationIcon />} onClick={() => {}} />
+              <IconButton
+                icon={<InformationIcon />}
+                label="Insert the mirakl url e.g. https://yourorg.mirakl.net/."
+              />
             </Tooltip>
           </Spacings.Inline>
         </Spacings.Stack>
@@ -86,6 +100,7 @@ const UrlConfiguration = ({ formik }) => {
 
 UrlConfiguration.propTypes = {
   formik: PropTypes.object,
+  setIsFormChanged: PropTypes.func,
 };
 
 export default UrlConfiguration;

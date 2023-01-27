@@ -2,7 +2,7 @@
   "syncTypes": [
     {
       "id": "categoryIsSync",
-      "label": "Category Sync",
+      "label": "Category Sync:",
       "modeId": "categoryIsSyncMode",
       "modes": [
         { "value": "job", "label": "JOB" },
@@ -11,7 +11,7 @@
     },
     {
       "id": "productIsSync",
-      "label": "Product Sync",
+      "label": "Product Sync:",
       "modeId": "productIsSyncMode",
       "modes": [
         { "value": "job", "label": "JOB" },
@@ -20,7 +20,7 @@
     },
     {
       "id": "offerIsSync",
-      "label": "Offer Sync",
+      "label": "Offer Sync:",
       "modeId": "offerIsSyncMode",
       "modes": [
         { "value": "job", "label": "JOB" },
@@ -29,7 +29,7 @@
     },
     {
       "id": "orderIsSync",
-      "label": "Order Sync",
+      "label": "Order Sync:",
       "modeId": "orderIsSyncMode",
       "modes": [
         { "value": "job", "label": "JOB" },

@@ -4,7 +4,6 @@ import {
 } from '@commercetools-frontend/application-shell';
 import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
 import { actions, useAsyncDispatch } from '@commercetools-frontend/sdk';
-import { useEffect, useState } from 'react';
 import { extractErrorFromGraphQlResponse } from '../../helpers';
 import UpdateSettings from './update-settings.ctp.graphql';
 import getSettings from './get-settings.ctp.graphql';
@@ -40,7 +39,6 @@ export const useSettings = () => {
 export const useSettingsToDashboard = () => {
   const dispatch = useAsyncDispatch();
   async function execute(formData) {
-    if (formData.connectorEnabled) {
       const baseUrl = formData?.backendURL;
       const settingUrl = '/settings/';
       const url = baseUrl + settingUrl;
@@ -50,16 +48,13 @@ export const useSettingsToDashboard = () => {
           headers: { 'ngrok-skip-browser-warning': '69420' },
         })
       );
-      const result = await dispatch(
+      await dispatch(
         actions.forwardTo.post({
           uri: url,
           payload: formData,
           headers: { 'ngrok-skip-browser-warning': '69420' },
         })
       );
-      // Update state with `result`
-      console.log('result:---' + result);
-    }
   }
 
   return {
@@ -79,7 +74,7 @@ export const useGetSettingsCTP = () => {
   });
 
   return {
-    baseurl: data?.customObject.value,
+    baseurl: data?.customObject?.value || '',
     error,
     loading,
   };
@@ -91,16 +86,15 @@ export const useGetSettingsData = () => {
   async function execute(baseurl) {
     const settingUrl = '/settings/';
     const url = baseurl + settingUrl;
-    console.log(url);
-      return await dispatch(
-        actions.forwardTo.get({
-          uri: url,
-          headers: { 'ngrok-skip-browser-warning': '69420' },
-        })
-      );
+    return await dispatch(
+      actions.forwardTo.get({
+        uri: url,
+        headers: { 'ngrok-skip-browser-warning': '69420' },
+      })
+    );
   }
 
   return {
-    execute
+    execute,
   };
 };
