@@ -74,7 +74,7 @@ const Settings = (props) => {
     initialValues,
     validate,
     onSubmit: async (formikValues) => {
-      try { 
+      try {
         await SaveSettingsToDashboard.execute(formikValues);
         if (formikValues.connectorEnabled && formikValues.backendURL) {
           await SaveSettings.execute({ url: formikValues.backendURL });
@@ -108,7 +108,8 @@ const Settings = (props) => {
 
   useEffect(() => {
     if (
-      typeof baseurl !== 'undefined' && baseurl &&
+      typeof baseurl !== 'undefined' &&
+      baseurl &&
       formik.values.backendURL !== baseurl &&
       !contentLoaded
     ) {
@@ -141,7 +142,7 @@ const Settings = (props) => {
           setIsLoading(false);
         });
     } else {
-      setIsLoading(false);
+      setIsLoading(true);
     }
   }, [
     GetSettingsData,
