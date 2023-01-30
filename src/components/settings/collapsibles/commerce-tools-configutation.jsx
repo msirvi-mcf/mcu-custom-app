@@ -18,6 +18,7 @@ const CommerceToolsConfigutation = ({ formik, setIsFormChanged }) => {
         const fileContent = reader.result;
         setIsFormChanged(true);
         formik.setFieldValue('ctConfigFile', fileContent);
+        formik.setFieldValue('configfilename', file.name);
         setFileUploaded(file.name);
       };
       reader.readAsText(file, 'UTF-8');
@@ -45,7 +46,7 @@ const CommerceToolsConfigutation = ({ formik, setIsFormChanged }) => {
       id="ctConfigurationPanel"
     >
       <Spacings.Stack>
-        {formik.values.ctConfigFile && (
+        {fileUploaded && (
           <div className="config-file-display">
             <h4>Current Configuration File</h4>
             <div>{ReactHtmlParser(configFile)}</div>
@@ -59,6 +60,7 @@ const CommerceToolsConfigutation = ({ formik, setIsFormChanged }) => {
             accept=".env"
             onChange={fileUploadHandler}
           />
+          {!fileUploaded && formik.values.configfilename && <span>Config: {formik.values.configfilename}</span> }
           {fileUploaded && <span>File Uploaded: {fileUploaded}</span>}
         </Spacings.Inline>
       </Spacings.Stack>

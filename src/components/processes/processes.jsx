@@ -11,12 +11,11 @@ import { useApplicationContext } from '@commercetools-frontend/application-shell
 // import { NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 import {
     usePaginationState,
-    useDataTableSortingState,
-    useRowSelection
+    useDataTableSortingState
 } from '@commercetools-uikit/hooks';
-import CheckboxInput from '@commercetools-uikit/checkbox-input';
+// import CheckboxInput from '@commercetools-uikit/checkbox-input';
 import { BackIcon } from '@commercetools-uikit/icons';
-import Constraints from '@commercetools-uikit/constraints';
+// import Constraints from '@commercetools-uikit/constraints';
 import FlatButton from '@commercetools-uikit/flat-button';
 import LoadingSpinner from '@commercetools-uikit/loading-spinner';
 import DataTableManager from '@commercetools-uikit/data-table-manager';
@@ -26,10 +25,6 @@ import { Pagination } from '@commercetools-uikit/pagination';
 import Spacings from '@commercetools-uikit/spacings';
 import Text from '@commercetools-uikit/text';
 import { SuspendedRoute } from '@commercetools-frontend/application-shell';
-// import {
-//     formatLocalizedString,
-//     transformLocalizedFieldToLocalizedString,
-// } from '@commercetools-frontend/l10n';
 import messages from './messages';
 import {
     useProcessList
@@ -37,22 +32,9 @@ import {
 // import { getErrorMessage } from '../../helpers';
 
 const ProcessDetails = lazy(() => import('../process-detail'));
-const rows = [{
-    'id': 418,
-    'type': 'API',
-    'name': 'POST mcm/product/sync',
-    'createAt': '23-12-2022',
-    'duration': '1s',
-    'file': '',
-    'output': 'sending data ...',
-    'processStatus': 'COMPLETED',
-    'miraklStatus': 'PROCESSING',
-    'reportFile': '',
-    'action': ''
-}];
 const initialVisibleColumns = [
     { key: '_id', label: 'ID' },
-    { key: 'entity', label: 'Entity', isSortable: true },
+    { key: 'entity', label: 'Entity' },
     { key: 'processedAt', label: 'Processed At' },
     { key: 'source', label: 'Source'},
     { key: 'destination', label: 'Destination' }
@@ -69,7 +51,7 @@ const itemRenderer = (item, column) => {
         case 'errorDetail':
           return item['error']?item['error']['message']:'-';
         default:
-            return item[column.key]?item[column.key]:'UNKNOWN';
+            return item[column.key]?item[column.key]:'unknown';
     }
 };
 
@@ -144,13 +126,13 @@ const Processes = (props) => {
     const columnsWithSelect = [
         ...visibleColumns,
     ];
-    // if (error) {
-    //     return (
-    //       <ContentNotification type="error">
-    //         <Text.Body>Something went wrong! Make sure the backend is running</Text.Body>
-    //       </ContentNotification>
-    //     );
-    //   }
+    if (error) {
+        return (
+          <ContentNotification type="error">
+            <Text.Body>Something went wrong! Please make sure the backend is running</Text.Body>
+          </ContentNotification>
+        );
+      }
     return (
         <Spacings.Stack scale="xl">
             <Spacings.Stack scale="xs">

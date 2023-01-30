@@ -27,7 +27,7 @@ export const useProcessDetails = (processId) => {
       }
     }
     execute();
-  }, [dispatch])
+  }, [dispatch,url])
 
   return {
     data, loading, error
@@ -48,18 +48,20 @@ export const useProcessList = ({page,perPage}) => {
     async function execute() {
       const logUrl = `/process/list?page=${pageValue}&perPage=${perPageValue}`
       const url = baseurl + logUrl;
-      
-      try {
-        const result = await dispatch(
-          actions.forwardTo.get({ uri: url, headers: { "ngrok-skip-browser-warning": "69420" } })
-        );
-        // Update state with `result`
-        setdata(result);
-        setloading(false)
-      } catch (error) {
-        // Update state with `error`
-        seterror(error);
+      if(baseurl){
+        try {
+          const result = await dispatch(
+            actions.forwardTo.get({ uri: url, headers: { "ngrok-skip-browser-warning": "69420" } })
+          );
+          // Update state with `result`
+          setdata(result);
+          setloading(false)
+        } catch (error) {
+          // Update state with `error`
+          seterror(error);
+        }
       }
+      
     }
     execute();
   }, [dispatch, baseurl,pageValue,perPageValue])

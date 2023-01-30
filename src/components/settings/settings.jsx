@@ -63,6 +63,7 @@ const Settings = (props) => {
       miraklOperatorKey: '',
       miraklUrl: '',
       ctConfigFile: '',
+      configfilename: '',
     };
   }, []);
 
