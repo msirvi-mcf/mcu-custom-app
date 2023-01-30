@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { lazy, useState } from 'react';
+import { lazy, useState, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import {
     Link as RouterLink,
@@ -14,7 +14,7 @@ import {
     useDataTableSortingState
 } from '@commercetools-uikit/hooks';
 // import CheckboxInput from '@commercetools-uikit/checkbox-input';
-import { BackIcon } from '@commercetools-uikit/icons';
+import { BackIcon,OperationsIcon } from '@commercetools-uikit/icons';
 // import Constraints from '@commercetools-uikit/constraints';
 import FlatButton from '@commercetools-uikit/flat-button';
 import LoadingSpinner from '@commercetools-uikit/loading-spinner';
@@ -28,30 +28,35 @@ import { SuspendedRoute } from '@commercetools-frontend/application-shell';
 import messages from './messages';
 import {
     useProcessList
-  } from '../../hooks/use-process-details';
+} from '../../hooks/use-process-details';
+import SecondaryButton from '@commercetools-uikit/secondary-button';
+import CollapsiblePanel from '@commercetools-uikit/collapsible-panel';
+import jobConfigData from '../../data/jobConfigData.json'
+import { useGetSettingsData, useGetSettingsCTP } from '../../hooks/use-settings';
 // import { getErrorMessage } from '../../helpers';
 
 const ProcessDetails = lazy(() => import('../process-detail'));
 const initialVisibleColumns = [
     { key: '_id', label: 'ID' },
     { key: 'entity', label: 'Entity' },
-    { key: 'processedAt', label: 'Processed At' },
-    { key: 'source', label: 'Source'},
-    { key: 'destination', label: 'Destination' }
+    { key: 'source', label: 'Source' },
+    { key: 'destination', label: 'Destination' },
+    { key: 'processedAt', label: 'Processed At' }
+
 ];
 const initialHiddenColumns = [
     { key: 'error', label: 'Error', isSortable: true },
-    { key: 'errorDetail', label: 'Error Detail', isSortable: true }    
+    { key: 'errorDetail', label: 'Error Detail', isSortable: true }
 ]
 
 const itemRenderer = (item, column) => {
     switch (column.key) {
         case 'error':
-          return item[column.key]?item[column.key]['name']:'-';
+            return item[column.key] ? item[column.key]['name'] : '-';
         case 'errorDetail':
-          return item['error']?item['error']['message']:'-';
+            return item['error'] ? item['error']['message'] : '-';
         default:
-            return item[column.key]?item[column.key]:'unknown';
+            return item[column.key] ? item[column.key] : 'unknown';
     }
 };
 
@@ -60,6 +65,26 @@ const Processes = (props) => {
     const match = useRouteMatch();
     const { push } = useHistory();
     const { page, perPage } = usePaginationState();
+    const { baseurl, settingsError } = useGetSettingsCTP();
+    const {execute} = useGetSettingsData();
+    const [config,setConfig] = useState("");
+    const [loadingConfig,setLoadingConfig] = useState(true);
+    useEffect(() => {
+        if (
+            typeof baseurl !== 'undefined' &&
+            baseurl
+        ) {
+            execute(baseurl)
+                .then((result) => {
+                    setLoadingConfig(false);
+                    setConfig(result.data);
+                })
+                .catch(() => {
+                    // TODO: handle error
+                });
+        }
+    }, [baseurl]);
+    const { syncTypes } = jobConfigData;
     const tableSorting = useDataTableSortingState({ key: 'key', order: 'asc' });
     const { dataLocale, projectLanguages } = useApplicationContext((context) => ({
         dataLocale: context.dataLocale,
@@ -101,7 +126,7 @@ const Processes = (props) => {
         IS_TABLE_CONDENSED_UPDATE: 'isTableCondensedUpdate',
         IS_TABLE_WRAPPING_TEXT_UPDATE: 'isTableWrappingTextUpdate'
     };
-    
+
     const tableSettingsChangeHandler = {
         [UPDATE_ACTIONS.COLUMNS_UPDATE]: (visibleColumnKeys) =>
             setTableData({
@@ -111,7 +136,7 @@ const Processes = (props) => {
         [UPDATE_ACTIONS.IS_TABLE_CONDENSED_UPDATE]: setIsCondensed,
         [UPDATE_ACTIONS.IS_TABLE_WRAPPING_TEXT_UPDATE]: setIsWrappingText,
     };
-    const { processList, total, loading, error } = useProcessList({page,perPage});
+    const { processList, total, loading, error } = useProcessList({ page, perPage });
 
     const mappedColumns = tableData.columns.reduce(
         (columns, column) => ({
@@ -126,13 +151,21 @@ const Processes = (props) => {
     const columnsWithSelect = [
         ...visibleColumns,
     ];
+    if(!loadingConfig && !config['connectorEnabled']) {
+        return (
+            <ContentNotification type="error">
+                <Text.Body>connector disabled</Text.Body>
+            </ContentNotification>
+        ); 
+
+    }
     if (error) {
         return (
-          <ContentNotification type="error">
-            <Text.Body>Something went wrong! Please make sure the backend is running</Text.Body>
-          </ContentNotification>
+            <ContentNotification type="error">
+                <Text.Body>Something went wrong! Please make sure the backend is running</Text.Body>
+            </ContentNotification>
         );
-      }
+    }
     return (
         <Spacings.Stack scale="xl">
             <Spacings.Stack scale="xs">
@@ -145,8 +178,41 @@ const Processes = (props) => {
                 <Text.Headline as="h2" intlMessage={messages.title} />
             </Spacings.Stack>
 
+           
+            {config ? (
+                <CollapsiblePanel
+                    header="Active Sync Jobs"
+                    id="jobConfigurationPanel"
+                    isDefaultClosed={true}
+                >
+                    <Spacings.Inline scale="xxl" alignItems="baseline">
+                        <Spacings.Stack scale="l">
+                            {syncTypes.map((data, index) => {
+                                if(config[data.id])
+                                {
+                                    return (
+                                        <Spacings.Inline key={index} alignItems='center' justifyContent='space-between'>
+                                            <div style={{ fontWeight: 'bold', width: '50%', whiteSpace: 'nowrap' }}>{data.label}</div>
+                                            <div style={{  width: '20%' }}>{config[data.modeId].toUpperCase()}</div>
+                                            <div style={{  width: '50%' }}>{config[data.modeId+'Schedule'] && (
+                                                config[data.modeId+'Schedule']
+                                            )}</div>
+                                            {/* TODO: Fix this css, temporary */}
+                                            <SecondaryButton
+                                                onClick={() => {alert(data.label+" executed succesfully!")}}
+                                                iconLeft={<OperationsIcon />}
+                                                label= "Execute Now"
+                                            />
+                                            
+                                        </Spacings.Inline>
+                                    );
+                                }
+                            })}
+                        </Spacings.Stack>
+                    </Spacings.Inline>
+                </CollapsiblePanel>
+            ) : null}
             {loading && <LoadingSpinner />}
-
             {processList ? (
                 <Spacings.Stack scale="l">
                     <DataTableManager
@@ -179,7 +245,7 @@ const Processes = (props) => {
                     />
                     <Switch>
                         <SuspendedRoute path={`${match.path}/:id`}>
-                            <ProcessDetails  />
+                            <ProcessDetails />
                         </SuspendedRoute>
                     </Switch>
                 </Spacings.Stack>

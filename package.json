@@ -45,7 +45,7 @@
     "@commercetools-uikit/flat-button": "^15.6.0",
     "@commercetools-uikit/grid": "^15.6.0",
     "@commercetools-uikit/hooks": "^15.6.0",
-    "@commercetools-uikit/icons": "^15.6.0",
+    "@commercetools-uikit/icons": "^15.10.0",
     "@commercetools-uikit/link": "^15.6.0",
     "@commercetools-uikit/loading-spinner": "^15.6.0",
     "@commercetools-uikit/localized-text-field": "^15.6.0",

@@ -2332,7 +2332,7 @@
     prop-types "15.8.1"
     react-intl "^5.25.1"
 
-"@commercetools-uikit/icons@15.10.0":
+"@commercetools-uikit/icons@15.10.0", "@commercetools-uikit/icons@^15.10.0":
   version "15.10.0"
   resolved "https://registry.yarnpkg.com/@commercetools-uikit/icons/-/icons-15.10.0.tgz#867b621524bac4b02b4306c35df6233395a111ec"
   integrity sha512-SHmMxffoVutFzQb6asGo6y8G0WDO1lZ+IFcs8vg7aZjTe71Ug00Emso0aum4W6Nv7C/tfeUriJ88KfiPjFliQw==

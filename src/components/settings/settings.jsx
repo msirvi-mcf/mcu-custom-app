@@ -144,7 +144,6 @@ const Settings = (props) => {
         });
     }
   }, [
-    GetSettingsData,
     baseurl,
     formik,
     initialValues,
