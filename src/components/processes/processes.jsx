@@ -130,7 +130,7 @@ const Processes = (props) => {
         [UPDATE_ACTIONS.IS_TABLE_CONDENSED_UPDATE]: setIsCondensed,
         [UPDATE_ACTIONS.IS_TABLE_WRAPPING_TEXT_UPDATE]: setIsWrappingText,
     };
-    const { processList, loading, error } = useProcessList();
+    const { processList, total, loading, error } = useProcessList({page,perPage});
     const {
         rows: rowsWithSelection,
         toggleRow,
@@ -195,12 +195,6 @@ const Processes = (props) => {
                 <Text.Headline as="h2" intlMessage={messages.title} />
             </Spacings.Stack>
 
-            <Constraints.Horizontal max={13}>
-                <ContentNotification type="info">
-                    <Text.Body intlMessage={messages.demoHint} />
-                </ContentNotification>
-            </Constraints.Horizontal>
-
             {loading && <LoadingSpinner />}
 
             {processList ? (
@@ -231,7 +225,7 @@ const Processes = (props) => {
                         onPageChange={page.onChange}
                         perPage={perPage.value}
                         onPerPageChange={perPage.onChange}
-                        totalItems={20}
+                        totalItems={total}
                     />
                     <Switch>
                         <SuspendedRoute path={`${match.path}/:id`}>

@@ -8,7 +8,6 @@ export const useProcessDetails = (processId) => {
   );
   const logUrl = "process/list/"
   const url = baseUrl + logUrl + '/' + processId;
-  // console.log(url);
   const [data, setdata] = useState(null);
   const [loading, setloading] = useState(true);
   const [error, seterror] = useState("");
@@ -36,17 +35,20 @@ export const useProcessDetails = (processId) => {
 
 };
 
-export const useProcessList = () => {
+export const useProcessList = ({page,perPage}) => {
+  
   const {baseurl} = useGetSettingsCTP();
   const [data, setdata] = useState(null);
   const [loading, setloading] = useState(true);
   const [error, seterror] = useState("");
   const dispatch = useAsyncDispatch();
+  const pageValue  = page.value;
+  const perPageValue = perPage.value;
   useEffect(() => {
     async function execute() {
-      const logUrl = "/process/list/"
+      const logUrl = `/process/list?page=${pageValue}&perPage=${perPageValue}`
       const url = baseurl + logUrl;
-      console.log(url);
+      
       try {
         const result = await dispatch(
           actions.forwardTo.get({ uri: url, headers: { "ngrok-skip-browser-warning": "69420" } })
@@ -60,10 +62,11 @@ export const useProcessList = () => {
       }
     }
     execute();
-  }, [dispatch, baseurl])
+  }, [dispatch, baseurl,pageValue,perPageValue])
 
   return {
     processList: data?.incidents,
+    total: data?.total,
     loading,
     error
   }
