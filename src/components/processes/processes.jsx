@@ -54,7 +54,8 @@ const initialVisibleColumns = [
     { key: '_id', label: 'ID' },
     { key: 'entity', label: 'Entity', isSortable: true },
     { key: 'processedAt', label: 'Processed At' },
-    { key: 'source', label: 'Source', isSortable: true }
+    { key: 'source', label: 'Source'},
+    { key: 'destination', label: 'Destination' }
 ];
 const initialHiddenColumns = [
     { key: 'error', label: 'Error', isSortable: true },
@@ -67,8 +68,6 @@ const itemRenderer = (item, column, dataLocale, projectLanguages) => {
           return item[column.key]?item[column.key]['name']:'-';
         case 'errorDetail':
           return item['error']?item['error']['message']:'-';
-        case 'processedAt':
-            return new Date(item[column.key]).toLocaleDateString();
         default:
             return item[column.key]?item[column.key]:'UNKNOWN';
     }
