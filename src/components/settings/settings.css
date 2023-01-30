@@ -61,6 +61,7 @@ label[for="connectorEnabled"]:last-child:focus-within {
   align-items: center;
   height: 32px;
   width: 200px;
+  column-gap: 7px;
 }
 
 #jobConfigurationPanel + div #scheduleSelect > span > div:first-child > div {
