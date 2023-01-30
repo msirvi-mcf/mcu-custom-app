@@ -62,7 +62,7 @@ const initialHiddenColumns = [
     { key: 'errorDetail', label: 'Error Detail', isSortable: true }    
 ]
 
-const itemRenderer = (item, column, dataLocale, projectLanguages) => {
+const itemRenderer = (item, column) => {
     switch (column.key) {
         case 'error':
           return item[column.key]?item[column.key]['name']:'-';
@@ -130,19 +130,7 @@ const Processes = (props) => {
         [UPDATE_ACTIONS.IS_TABLE_WRAPPING_TEXT_UPDATE]: setIsWrappingText,
     };
     const { processList, total, loading, error } = useProcessList({page,perPage});
-    const {
-        rows: rowsWithSelection,
-        toggleRow,
-        selectAllRows,
-        deselectAllRows,
-        getIsRowSelected,
-        getNumberOfSelectedRows,
-    } = useRowSelection('checkbox', rows);
-    const countSelectedRows = getNumberOfSelectedRows();
-    const isSelectColumnHeaderIndeterminate =
-        countSelectedRows > 0 && countSelectedRows < rowsWithSelection.length;
-    const handleSelectColumnHeaderChange =
-        countSelectedRows === 0 ? selectAllRows : deselectAllRows;
+
     const mappedColumns = tableData.columns.reduce(
         (columns, column) => ({
             ...columns,
@@ -154,25 +142,6 @@ const Processes = (props) => {
         (columnKey) => mappedColumns[columnKey]
     );
     const columnsWithSelect = [
-        {
-            key: 'checkbox',
-            label: (
-                <CheckboxInput
-                    isIndeterminate={isSelectColumnHeaderIndeterminate}
-                    isChecked={countSelectedRows !== 0}
-                    onChange={handleSelectColumnHeaderChange}
-                />
-            ),
-            shouldIgnoreRowClick: true,
-            align: 'center',
-            renderItem: (row) => (
-                <CheckboxInput
-                    isChecked={getIsRowSelected(row._id)}
-                    onChange={() => toggleRow(row._id)}
-                />
-            ),
-            disableResizing: true,
-        },
         ...visibleColumns,
     ];
     // if (error) {
