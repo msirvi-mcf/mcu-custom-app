@@ -4,6 +4,7 @@
       "id": "categoryIsSync",
       "label": "Category Sync:",
       "modeId": "categoryIsSyncMode",
+      "entity": "category",
       "modes": [
         { "value": "job", "label": "JOB" },
         { "value": "queue", "label": "QUEUE" }
@@ -13,6 +14,7 @@
       "id": "productIsSync",
       "label": "Product Sync:",
       "modeId": "productIsSyncMode",
+      "entity": "product",
       "modes": [
         { "value": "job", "label": "JOB" },
         { "value": "queue", "label": "QUEUE" }
@@ -22,15 +24,27 @@
       "id": "offerIsSync",
       "label": "Offer Sync:",
       "modeId": "offerIsSyncMode",
+      "entity": "offer",
       "modes": [
         { "value": "job", "label": "JOB" },
         { "value": "queue", "label": "QUEUE" }
       ]
     },
     {
-      "id": "orderIsSync",
-      "label": "Order Sync:",
-      "modeId": "orderIsSyncMode",
+      "id": "orderIsImport",
+      "label": "Order Import:",
+      "modeId": "orderIsImportMode",
+      "entity": "orderimport",
+      "modes": [
+        { "value": "job", "label": "JOB" },
+        { "value": "queue", "label": "QUEUE" }
+      ]
+    },
+    {
+      "id": "orderIsExport",
+      "label": "Order Export:",
+      "modeId": "orderIsExportMode",
+      "entity": "orderexport",
       "modes": [
         { "value": "job", "label": "JOB" },
         { "value": "queue", "label": "QUEUE" }

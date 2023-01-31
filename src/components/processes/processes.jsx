@@ -33,6 +33,8 @@ import SecondaryButton from '@commercetools-uikit/secondary-button';
 import CollapsiblePanel from '@commercetools-uikit/collapsible-panel';
 import jobConfigData from '../../data/jobConfigData.json'
 import { useGetSettingsData, useGetSettingsCTP } from '../../hooks/use-settings';
+import { removeNotification } from '@commercetools-frontend/notifications';
+import { useShowNotification } from '@commercetools-frontend/actions-global';
 // import { getErrorMessage } from '../../helpers';
 
 const ProcessDetails = lazy(() => import('../process-detail'));
@@ -41,6 +43,7 @@ const initialVisibleColumns = [
     { key: 'entity', label: 'Entity' },
     { key: 'source', label: 'Source' },
     { key: 'destination', label: 'Destination' },
+    { key: 'status', label: 'Status' },
     { key: 'processedAt', label: 'Processed At' }
 
 ];
@@ -55,6 +58,15 @@ const itemRenderer = (item, column) => {
             return item[column.key] ? item[column.key]['name'] : '-';
         case 'errorDetail':
             return item['error'] ? item['error']['message'] : '-';
+        case 'status':
+            {
+                if(item[column.key] === "Inprogress") {
+                    return "Inprogress"
+                } else {
+                    return item['error'] ? "Error" : 'Completed';
+                }
+            }
+           
         default:
             return item[column.key] ? item[column.key] : 'unknown';
     }
@@ -66,6 +78,7 @@ const Processes = (props) => {
     const { push } = useHistory();
     const { page, perPage } = usePaginationState();
     const { baseurl, settingsError } = useGetSettingsCTP();
+    const showNotification = useShowNotification();
     const {execute} = useGetSettingsData();
     const [config,setConfig] = useState("");
     const [loadingConfig,setLoadingConfig] = useState(true);
@@ -84,7 +97,17 @@ const Processes = (props) => {
                 });
         }
     }, [baseurl]);
+    
+    
     const { syncTypes } = jobConfigData;
+    let jobsAll = false
+    syncTypes.map((data, index) => {
+        if(config[data.id]) {
+            jobsAll = true
+            return jobsAll; 
+        }
+        return jobsAll;
+    })
     const tableSorting = useDataTableSortingState({ key: 'key', order: 'asc' });
     const { dataLocale, projectLanguages } = useApplicationContext((context) => ({
         dataLocale: context.dataLocale,
@@ -136,8 +159,53 @@ const Processes = (props) => {
         [UPDATE_ACTIONS.IS_TABLE_CONDENSED_UPDATE]: setIsCondensed,
         [UPDATE_ACTIONS.IS_TABLE_WRAPPING_TEXT_UPDATE]: setIsWrappingText,
     };
+    const [row,setRow] = useState();
     const { processList, total, loading, error } = useProcessList({ page, perPage });
-
+    
+    const executeJobsHandler = (label, entity) => {
+        const rowDummy = createDummyRow(entity);
+        
+        setRow(rowDummy);
+        showNotification({
+            kind: 'success',
+            domain: 'side',
+            text: intl.formatMessage( {id: `${label}.execute`,
+            defaultMessage: `${label} - ${entity} executed`}, {}),
+          });
+    }
+    const createDummyRow = (entity) => {
+       const row =  {_id: `${ "63d8ead53ef73b30828943" + Math.floor(1000 + Math.random() * 9000)}`,
+        entity: `${entity}`,source: '',destination: '',
+       status: 'Inprogress', processedAt: `${new Date().toISOString()}`,error:'', errorDetail:''}
+        switch (entity) {
+            case "category":
+                row['source'] = 'COMMERCETOOLS';
+                row['destination'] = 'MIRAKL';
+                return row;
+            case "product":
+                row['source'] = 'MIRAKL';
+                row['destination'] = 'COMMERCETOOLS';
+                return row;
+            case "offer":
+                row['source'] = 'MIRAKL';
+                row['destination'] = 'COMMERCETOOLS';
+                return row;
+            case "orderexport":
+                row['source'] = 'COMMERCETOOLS';
+                row['destination'] = 'MIRAKL';
+                return row;
+            case "orderimport":
+                row['source'] = 'MIRAKL';
+                row['destination'] = 'COMMERCETOOLS';
+                return row;
+            default: 
+            return {};
+        }
+         
+    }
+    if (row){
+         processList.unshift(row);
+        } else processList;
     const mappedColumns = tableData.columns.reduce(
         (columns, column) => ({
             ...columns,
@@ -199,15 +267,22 @@ const Processes = (props) => {
                                             )}</div>
                                             {/* TODO: Fix this css, temporary */}
                                             <SecondaryButton
-                                                onClick={() => {alert(data.label+" executed succesfully!")}}
+                                                onClick={() => {executeJobsHandler(data.label, data.entity)}}
                                                 iconLeft={<OperationsIcon />}
                                                 label= "Execute Now"
                                             />
                                             
                                         </Spacings.Inline>
                                     );
-                                }
+                                } 
                             })}
+                            {!jobsAll ? (
+                                
+                            <Spacings.Inline key="nodata" alignItems='center' justifyContent='space-between'>
+                                <div> All sync jobs are disabled</div>
+                            </Spacings.Inline>
+                                   
+                            ): null}
                         </Spacings.Stack>
                     </Spacings.Inline>
                 </CollapsiblePanel>
@@ -234,7 +309,6 @@ const Processes = (props) => {
                             sortedBy={tableSorting.value.key}
                             sortDirection={tableSorting.value.order}
                             onSortChange={tableSorting.onChange}
-                            onRowClick={(row) => push(`${match.url}/${row._id}`)}
                         /></DataTableManager>
                     <Pagination
                         page={page.value}

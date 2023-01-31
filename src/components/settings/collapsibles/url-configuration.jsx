@@ -37,7 +37,7 @@ const UrlConfiguration = ({ formik, setIsFormChanged }) => {
             />
             <Tooltip
               placement="right"
-              title="Insert the connector endpoint e.g. https://connector.com/."
+              title="Enter the connector endpoint e.g. https://connector.com/."
             >
               <IconButton
                 icon={<InformationIcon />}
@@ -56,7 +56,7 @@ const UrlConfiguration = ({ formik, setIsFormChanged }) => {
               onBlur={formik.handleBlur}
               isRequired
             />
-            <Tooltip placement="right" title="Insert the operator key.">
+            <Tooltip placement="right" title="Enter the operator key.">
               <IconButton
                 icon={<InformationIcon />}
                 label="Insert the operator key."
@@ -84,7 +84,7 @@ const UrlConfiguration = ({ formik, setIsFormChanged }) => {
             />
             <Tooltip
               placement="right"
-              title="Insert the mirakl url e.g. https://yourorg.mirakl.net/."
+              title="Enter the mirakl url e.g. https://yourorg.mirakl.net/."
             >
               <IconButton
                 icon={<InformationIcon />}

@@ -88,7 +88,7 @@ const JobConfiguration = ({ formik, setIsFormChanged }) => {
                             />
                             <Tooltip
                               placement="right"
-                              title="Insert a valid cron syntax e.g. * * * * *"
+                              title="Enter a valid cron syntax e.g. * * * * *"
                             >
                               <IconButton
                                 icon={<InformationIcon />}
