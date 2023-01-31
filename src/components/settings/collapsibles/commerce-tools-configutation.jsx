@@ -34,7 +34,17 @@ const CommerceToolsConfigutation = ({ formik, setIsFormChanged }) => {
   return (
     <CollapsiblePanel
       headerControls={
-        <Tooltip placement="right" title="Upload .env file, keys required in .env : CTP_PROJECT_KEY,CTP_CLIENT_SECRET,CTP_CLIENT_ID,CTP_AUTH_URL,CTP_API_URL,CTP_SCOPES">
+        <Tooltip placement="right" title={
+          <div style={{width: '200px', height: 'auto', whiteSpace: 'pre-wrap'}}>
+          Upload .env file, e.g : 
+          CTP_PROJECT_KEY=key
+          CTP_CLIENT_SECRET=Zwb88jjjher
+          CTP_CLIENT_ID=sdskjRR88jss_-Rt
+          CTP_AUTH_URL=https://auth.us-central1.gcp.commercetools.com
+          CTP_API_URL=https://api.us-central1.gcp.commercetools.com
+          CTP_SCOPES=manage_project:key
+        </div>
+        }>
           <IconButton
             icon={<InformationIcon />}
             label="Upload .env format config file only"
