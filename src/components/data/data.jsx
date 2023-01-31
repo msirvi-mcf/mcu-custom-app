@@ -20,6 +20,7 @@ import Text from '@commercetools-uikit/text';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import { SuspendedRoute } from '@commercetools-frontend/application-shell';
 import messages from './messages';
+import { SearchIcon } from '@commercetools-uikit/icons';
 import './data.css';
 
 const initialVisibleColumns = [
@@ -156,7 +157,11 @@ const Data = (props) => {
   const columnsWithSelect = [...visibleColumns];
 
   const searchDataHandler = (event) => {
-    setSearchValue(event.target.value);
+    if (event.target.value.length > 20) {
+      setSearchValue(event.target.value.substr(0, 20));
+    } else {
+      setSearchValue(event.target.value);
+    }
   };
 
   const resetSearchHandler = () => {
@@ -211,6 +216,7 @@ const Data = (props) => {
             <TextInput
               id="searchData"
               value={searchValue}
+              horizontalConstraint={7}
               placeholder="Search data..."
               onChange={searchDataHandler}
             />
