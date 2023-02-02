@@ -20,7 +20,7 @@ import Text from '@commercetools-uikit/text';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import { SuspendedRoute } from '@commercetools-frontend/application-shell';
 import messages from './messages';
-import { useSellerData, useSearchApi } from '../../hooks/use-data';
+import { useSearchApi } from '../../hooks/use-data';
 import { ContentNotification } from '@commercetools-uikit/notifications';
 import { getErrorMessage } from '../../helpers';
 import { NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
@@ -62,16 +62,10 @@ const itemRenderer = (item, column, dataLocale, projectLanguages) => {
 
 const Data = (props) => {
   const intl = useIntl();
-  const [searchValue, setSearchValue] = useState('');
   const match = useRouteMatch();
   const { page, perPage } = usePaginationState();
 
   const tableSorting = useDataTableSortingState({ key: 'key', order: 'asc' });
-  // const { channelsPaginatedResult,channels, error, loading } = useSellerData({
-  //   page,
-  //   perPage,
-  //   tableSorting,
-  // });
   const { channelsPaginatedResult, filteredData, searchTerm, setSearchTerm, error, loading } = useSearchApi({
     page,
     perPage,
