@@ -26,7 +26,6 @@ export const useSellerData = ({ page, perPage, tableSorting }) => {
 };
 export const useSearchApi = ({ page, perPage, tableSorting }) => {
     const { channelsPaginatedResult, channels, error, loading } = useSellerData({ page, perPage, tableSorting });
-    console.log(channelsPaginatedResult);
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredData, setFilteredData] = useState([]);
 

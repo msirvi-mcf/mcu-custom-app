@@ -181,7 +181,7 @@ const Data = (props) => {
               id="searchData"
               value={searchTerm}
               horizontalConstraint={7}
-              placeholder="Search data..."
+              placeholder="Search sellers by name or key..."
               onChange={searchDataHandler}
             />
             <PrimaryButton
@@ -193,7 +193,7 @@ const Data = (props) => {
             />
           </Spacings.Inline>
 
-          {channelsPaginatedResult ? (
+          {filteredData.length ? (
             <Spacings.Stack scale="l">
               <DataTableManager
                 columns={
@@ -229,7 +229,12 @@ const Data = (props) => {
                 <SuspendedRoute path={`${match.path}/:id`}></SuspendedRoute>
               </Switch>
             </Spacings.Stack>
-          ) : null}
+          ) : 
+          <Spacings.Stack scale="l" >
+            <div>
+              There is no sellers data available.
+            </div>
+            </Spacings.Stack>}
         </Spacings.Stack>
       )}
     </Spacings.Stack>
