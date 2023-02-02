@@ -20,7 +20,7 @@ import Text from '@commercetools-uikit/text';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import { SuspendedRoute } from '@commercetools-frontend/application-shell';
 import messages from './messages';
-import {useSellerData} from '../../hooks/use-data';
+import { useSellerData, useSearchApi } from '../../hooks/use-data';
 import { ContentNotification } from '@commercetools-uikit/notifications';
 import { getErrorMessage } from '../../helpers';
 import { NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
@@ -40,7 +40,7 @@ const initialHiddenColumns = [
   { key: 'roles', label: 'Roles' },
 ];
 
-const itemRenderer = (item, column,dataLocale,projectLanguages) => {
+const itemRenderer = (item, column, dataLocale, projectLanguages) => {
   switch (column.key) {
     case 'roles':
       return item.roles.join(', ');
@@ -67,13 +67,17 @@ const Data = (props) => {
   const { page, perPage } = usePaginationState();
 
   const tableSorting = useDataTableSortingState({ key: 'key', order: 'asc' });
-  const { channelsPaginatedResult, error, loading } = useSellerData({
+  // const { channelsPaginatedResult,channels, error, loading } = useSellerData({
+  //   page,
+  //   perPage,
+  //   tableSorting,
+  // });
+  const { channelsPaginatedResult, filteredData, searchTerm, setSearchTerm, error, loading } = useSearchApi({
     page,
     perPage,
     tableSorting,
   });
- 
-  
+
   const { dataLocale, projectLanguages } = useApplicationContext((context) => ({
     dataLocale: context.dataLocale,
     projectLanguages: context.project.languages,
@@ -127,7 +131,7 @@ const Data = (props) => {
     [UPDATE_ACTIONS.IS_TABLE_CONDENSED_UPDATE]: setIsCondensed,
     [UPDATE_ACTIONS.IS_TABLE_WRAPPING_TEXT_UPDATE]: setIsWrappingText,
   };
-  
+
   const mappedColumns = tableData.columns.reduce(
     (columns, column) => ({
       ...columns,
@@ -142,16 +146,12 @@ const Data = (props) => {
   const columnsWithSelect = [...visibleColumns];
 
   const searchDataHandler = (event) => {
-    if (event.target.value.length > 20) {
-      setSearchValue(event.target.value.substr(0, 20));
-    } else {
-      setSearchValue(event.target.value);
-    }
+    setSearchTerm(event.target.value)
   };
 
   const resetSearchHandler = () => {
-    setSearchValue('');
-    
+    setSearchTerm("");
+
   };
 
 
@@ -185,7 +185,7 @@ const Data = (props) => {
             </Label>
             <TextInput
               id="searchData"
-              value={searchValue}
+              value={searchTerm}
               horizontalConstraint={7}
               placeholder="Search data..."
               onChange={searchDataHandler}
@@ -215,7 +215,7 @@ const Data = (props) => {
                   isCondensed
                   columns={initialVisibleColumns}
                   disableDisplaySettings
-                  rows={channelsPaginatedResult.results}
+                  rows={filteredData}
                   itemRenderer={(item, column) =>
                     itemRenderer(item, column, dataLocale, projectLanguages)
                   }

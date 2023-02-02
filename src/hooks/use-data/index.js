@@ -1,3 +1,3 @@
 export {
-  useSellerData
+  useSellerData,useSearchApi
 } from './use-data';
