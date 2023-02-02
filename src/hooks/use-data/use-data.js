@@ -3,7 +3,7 @@ import {
 } from '@commercetools-frontend/application-shell';
 import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
 import getSellers from './get-sellers.ctp.graphql';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 export const useSellerData = ({ page, perPage, tableSorting }) => {
     const { data, error, loading } = useMcQuery(getSellers, {
@@ -25,21 +25,27 @@ export const useSellerData = ({ page, perPage, tableSorting }) => {
     };
 };
 export const useSearchApi = ({ page, perPage, tableSorting }) => {
-    const { channelsPaginatedResult,channels, error,loading } = useSellerData({ page, perPage, tableSorting });
+    const { channelsPaginatedResult, channels, error, loading } = useSellerData({ page, perPage, tableSorting });
     console.log(channelsPaginatedResult);
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredData, setFilteredData] = useState([]);
-  
+
     useEffect(() => {
-        if(channels){
+        if (channels) {
             setFilteredData(
-                channels.filter(item =>
-                  item.key.toLowerCase().includes(searchTerm.toLowerCase())
+                channels.filter(item => {
+                    return (
+                        item.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        item.nameAllLocales.some(locale =>
+                            locale.value.toLowerCase().includes(searchTerm.toLowerCase())
+                        )
+                    )
+                }
                 )
-              );
+            );
         }
-      
+
     }, [channels, searchTerm]);
-  
-    return { channelsPaginatedResult,channels, filteredData, searchTerm, setSearchTerm, error, loading };
-  };
+
+    return { channelsPaginatedResult, channels, filteredData, searchTerm, setSearchTerm, error, loading };
+};
